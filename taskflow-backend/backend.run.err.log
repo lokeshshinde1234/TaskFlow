@@ -1,0 +1,35 @@
+INFO:     Will watch for changes in these directories: ['D:\\Company Project\\taskflow-backend']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [25080] using WatchFiles
+INFO:     Started server process [21912]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     ('127.0.0.1', 58094) - "WebSocket /ws/locations" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1', 51396) - "WebSocket /ws/locations" [accepted]
+INFO:     connection open
+WARNING:  WatchFiles detected changes in 'schemas.py', 'employee_login_accounts.py', 'models.py', 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:     connection closed
+INFO:     Waiting for connections to close. (CTRL+C to force quit)
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [21912]
+INFO:     Started server process [2608]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     ('127.0.0.1', 50253) - "WebSocket /ws/locations" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1', 63098) - "WebSocket /ws/locations" [accepted]
+INFO:     connection open
+WARNING:  WatchFiles detected changes in 'employee_login_accounts.py', 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:     connection closed
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2608]
+INFO:     Started server process [20084]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
