@@ -922,7 +922,7 @@ def verify_otp(payload: OTPVerify, db: Session = Depends(get_db)):
     if otp_record.otp_code != submitted_otp:
         raise HTTPException(
             status_code=400,
-            detail="Invalid OTP. Use the latest 6-digit code from your email (check for a leading zero).",
+            detail="Invalid OTP. A newer code may have been sent. Use the latest 6-digit code from your email.",
         )
 
     otp_record.is_verified = True

@@ -33,3 +33,35 @@ INFO:     Finished server process [2608]
 INFO:     Started server process [20084]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [20084]
+INFO:     Started server process [11736]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     ('127.0.0.1', 51576) - "WebSocket /ws/locations" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1', 54663) - "WebSocket /ws/locations" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1', 59823) - "WebSocket /ws/locations" [accepted]
+INFO:     connection open
+INFO:     ('127.0.0.1', 65178) - "WebSocket /ws/locations" [accepted]
+INFO:     connection open
+INFO:     ('127.0.0.1', 62899) - "WebSocket /ws/locations" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     connection closed
+INFO:     ('127.0.0.1', 61908) - "WebSocket /ws/locations" [accepted]
+INFO:     connection open
+INFO:     ('127.0.0.1', 63575) - "WebSocket /ws/locations" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     connection closed
+INFO:     ('127.0.0.1', 53438) - "WebSocket /ws/locations" [accepted]
+INFO:     connection open
+INFO:     ('127.0.0.1', 60840) - "WebSocket /ws/locations" [accepted]
+INFO:     connection open
