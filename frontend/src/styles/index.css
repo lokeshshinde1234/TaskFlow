@@ -231,6 +231,37 @@ select:not(.dark) option {
   color: #1f2937 !important;
 }
 
+.tf-public-page input[type="text"],
+.tf-public-page input[type="email"],
+.tf-public-page input[type="password"],
+.tf-public-page input[type="tel"],
+.tf-public-page input[type="time"],
+.tf-public-page input[type="number"],
+.tf-public-page input[type="date"],
+.tf-public-page input[type="url"],
+.tf-public-page textarea,
+.tf-public-page select,
+.auth-dark-panel input[type="text"],
+.auth-dark-panel input[type="email"],
+.auth-dark-panel input[type="password"],
+.auth-dark-panel input[type="tel"],
+.auth-dark-panel input[type="time"],
+.auth-dark-panel input[type="number"],
+.auth-dark-panel input[type="date"],
+.auth-dark-panel input[type="url"],
+.auth-dark-panel textarea,
+.auth-dark-panel select {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  color: #ffffff !important;
+}
+
+.tf-public-page input:-webkit-autofill,
+.auth-dark-panel input:-webkit-autofill {
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 0 0 1000px rgba(15, 23, 42, 0.94) inset !important;
+  caret-color: #ffffff;
+}
+
 /* Ensure text is visible in dark mode */
 .dark input[type="text"],
 .dark input[type="email"],

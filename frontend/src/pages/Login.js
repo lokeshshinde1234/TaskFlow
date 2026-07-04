@@ -50,7 +50,7 @@ export default function Login() {
           <p className="text-sm text-slate-400">JWT protected routes with bcrypt password verification.</p>
         </section>
 
-        <section className="flex items-center border-l border-white/10 bg-slate-950/72 p-6 text-white backdrop-blur-xl sm:p-10">
+        <section className="auth-dark-panel flex items-center border-l border-white/10 bg-slate-950/72 p-6 text-white backdrop-blur-xl sm:p-10">
           <div className="w-full">
             <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 hover:text-cyan-100">
