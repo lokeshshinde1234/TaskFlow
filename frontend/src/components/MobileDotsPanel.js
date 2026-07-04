@@ -17,29 +17,29 @@ export default function MobileDotsPanel({ title, subtitle, tips = [], actions = 
       </button>
 
       {open && (
-        <div className="absolute right-0 top-12 z-50 w-[92vw] max-w-sm rounded-3xl border border-white/15 bg-slate-950/95 p-4 shadow-2xl backdrop-blur-xl">
+        <div className="absolute right-0 top-12 z-50 w-[92vw] max-w-sm rounded-3xl border border-slate-200 bg-white/95 p-4 text-slate-950 shadow-2xl backdrop-blur-xl dark:border-white/15 dark:bg-slate-950/95 dark:text-white">
           <div className="flex items-center justify-between gap-4">
             <div>
-              <p className="text-sm font-semibold text-white">{title || 'Quick actions'}</p>
-              {subtitle && <p className="mt-1 text-xs text-slate-400">{subtitle}</p>}
+              <p className="text-sm font-semibold text-slate-950 dark:text-white">{title || 'Quick actions'}</p>
+              {subtitle && <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{subtitle}</p>}
             </div>
-            <button type="button" onClick={() => setOpen(false)} className="rounded-full bg-white/10 p-2 text-slate-200 hover:bg-white/15">
+            <button type="button" onClick={() => setOpen(false)} className="rounded-full bg-slate-100 p-2 text-slate-700 hover:bg-slate-200 dark:bg-white/10 dark:text-slate-200 dark:hover:bg-white/15">
               <FiX className="h-4 w-4" />
             </button>
           </div>
 
           <div className="mt-4 space-y-3">
             {tips.map((tip) => (
-              <div key={tip.title} className="rounded-2xl border border-white/10 bg-white/5 p-3">
-                <p className="text-sm font-semibold text-slate-100">{tip.title}</p>
-                <p className="mt-1 text-xs leading-5 text-slate-400">{tip.description}</p>
+              <div key={tip.title} className="rounded-2xl border border-slate-200 bg-slate-50 p-3 dark:border-white/10 dark:bg-white/5">
+                <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{tip.title}</p>
+                <p className="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-400">{tip.description}</p>
               </div>
             ))}
 
             {actions.length > 0 && (
               <div className="grid gap-2">
                 {actions.map((action) => {
-                  const className = 'inline-flex items-center justify-between rounded-2xl border border-white/10 bg-cyan-600/10 px-4 py-3 text-sm font-semibold text-cyan-200 transition hover:bg-cyan-600/20';
+                  const className = 'inline-flex items-center justify-between rounded-2xl border border-cyan-200 bg-cyan-50 px-4 py-3 text-sm font-semibold text-cyan-800 transition hover:bg-cyan-100 dark:border-white/10 dark:bg-cyan-600/10 dark:text-cyan-200 dark:hover:bg-cyan-600/20';
                   if (action.onClick) {
                     return (
                       <button

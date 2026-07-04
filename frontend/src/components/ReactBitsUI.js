@@ -67,11 +67,11 @@ export function DevicePreview({ compact = false }) {
 
   return (
     <GlassPanel className="relative overflow-hidden p-4">
-      <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300 to-transparent" />
-      <div className="rounded-md border border-white/10 bg-slate-950/80 p-4">
-        <div className="flex items-center justify-between border-b border-white/10 pb-3">
+      <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-cyan-500 to-transparent dark:via-cyan-300" />
+      <div className="rounded-md border border-slate-200 bg-white/92 p-4 text-slate-950 dark:border-white/10 dark:bg-slate-950/80 dark:text-white">
+        <div className="flex items-center justify-between border-b border-slate-200 pb-3 dark:border-white/10">
           <div>
-            <p className="text-xs uppercase text-cyan-200">Live operations</p>
+            <p className="text-xs uppercase text-cyan-700 dark:text-cyan-200">Live operations</p>
             <p className="text-lg font-black">TaskFlow Command</p>
           </div>
           <div className="flex gap-1.5">
@@ -83,18 +83,18 @@ export function DevicePreview({ compact = false }) {
         <div className={`mt-4 grid gap-3 ${compact ? '' : 'sm:grid-cols-[1fr_0.8fr]'}`}>
           <div className="grid gap-3">
             {rows.map((row, index) => (
-              <div key={row} className="tf-float-row flex items-center justify-between rounded-md border border-white/10 bg-white/[0.06] px-3 py-3" style={{ animationDelay: `${index * 120}ms` }}>
-                <span className="text-sm text-slate-200">{row}</span>
+              <div key={row} className="tf-float-row flex items-center justify-between rounded-md border border-slate-200 bg-slate-50 px-3 py-3 dark:border-white/10 dark:bg-white/[0.06]" style={{ animationDelay: `${index * 120}ms` }}>
+                <span className="text-sm text-slate-700 dark:text-slate-200">{row}</span>
                 <span className="h-2 w-14 rounded-full bg-gradient-to-r from-cyan-300 to-emerald-300" />
               </div>
             ))}
           </div>
-          <div className="relative min-h-52 overflow-hidden rounded-md border border-white/10 bg-[#081827]">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_35%_30%,rgba(20,184,166,0.24),transparent_26%),radial-gradient(circle_at_70%_70%,rgba(59,130,246,0.22),transparent_30%)]" />
+          <div className="relative min-h-52 overflow-hidden rounded-md border border-slate-200 bg-cyan-50 dark:border-white/10 dark:bg-[#081827]">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_35%_30%,rgba(20,184,166,0.18),transparent_26%),radial-gradient(circle_at_70%_70%,rgba(59,130,246,0.16),transparent_30%)] dark:bg-[radial-gradient(circle_at_35%_30%,rgba(20,184,166,0.24),transparent_26%),radial-gradient(circle_at_70%_70%,rgba(59,130,246,0.22),transparent_30%)]" />
             <div className="absolute left-[18%] top-[18%] h-3 w-3 rounded-full bg-cyan-300 shadow-[0_0_30px_rgba(103,232,249,0.9)]" />
             <div className="absolute left-[60%] top-[42%] h-3 w-3 rounded-full bg-emerald-300 shadow-[0_0_30px_rgba(110,231,183,0.9)]" />
             <div className="absolute left-[42%] top-[66%] h-3 w-3 rounded-full bg-amber-300 shadow-[0_0_30px_rgba(252,211,77,0.9)]" />
-            <div className="absolute inset-x-5 bottom-5 rounded-md border border-white/10 bg-slate-950/70 p-3 text-xs text-slate-300 backdrop-blur">
+            <div className="absolute inset-x-5 bottom-5 rounded-md border border-slate-200 bg-white/85 p-3 text-xs text-slate-700 backdrop-blur dark:border-white/10 dark:bg-slate-950/70 dark:text-slate-300">
               37 tracked employees syncing every 60 seconds
             </div>
           </div>
