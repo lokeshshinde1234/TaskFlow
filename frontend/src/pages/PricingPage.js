@@ -16,13 +16,13 @@ export default function PricingPage() {
         />
         <div className="mt-10 grid gap-5 lg:grid-cols-3">
           {pricingPlans.map((plan) => (
-            <article key={plan.name} className="tf-public-surface rounded-lg p-6">
-              <h2 className="text-2xl font-black text-white">{plan.name}</h2>
-              <p className="mt-3 text-3xl font-black text-cyan-300">{plan.price}</p>
-              <p className="mt-4 text-sm leading-6 text-slate-300">{plan.text}</p>
+            <article key={plan.name} className="rounded-lg border border-white/70 bg-white/85 p-6 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/[0.07]">
+              <h2 className="text-2xl font-black text-slate-950 dark:text-white">{plan.name}</h2>
+              <p className="mt-3 text-3xl font-black text-cyan-700 dark:text-cyan-300">{plan.price}</p>
+              <p className="mt-4 text-sm leading-6 text-slate-600 dark:text-slate-300">{plan.text}</p>
               <div className="mt-6 grid gap-3">
                 {plan.features.map((feature) => (
-                  <div key={feature} className="flex items-center gap-3 text-sm font-semibold text-slate-200">
+                  <div key={feature} className="flex items-center gap-3 text-sm font-semibold text-slate-700 dark:text-slate-200">
                     <FiCheckCircle className="text-emerald-500" />
                     {feature}
                   </div>

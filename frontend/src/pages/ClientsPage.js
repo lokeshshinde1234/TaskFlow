@@ -24,9 +24,9 @@ export default function ClientsPage() {
             ['Field confidence', 'Location records support better transparency for distributed teams.'],
             ['Clean reporting', 'Payroll, attendance, and workforce totals are prepared for executive review.'],
           ].map(([title, text]) => (
-            <article key={title} className="tf-public-surface rounded-lg p-6">
-              <h2 className="text-xl font-black text-white">{title}</h2>
-              <p className="mt-3 text-sm leading-6 text-slate-300">{text}</p>
+            <article key={title} className="rounded-lg border border-white/70 bg-white/85 p-6 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/[0.07]">
+              <h2 className="text-xl font-black text-slate-950 dark:text-white">{title}</h2>
+              <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">{text}</p>
             </article>
           ))}
         </div>

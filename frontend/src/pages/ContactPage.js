@@ -8,7 +8,7 @@ export default function ContactPage() {
   return (
     <SiteLayout>
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 md:hidden">
-        <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold text-cyan-300">
+        <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold text-cyan-700 dark:text-cyan-300">
           <FiArrowLeft /> Home
         </Link>
       </div>
@@ -24,8 +24,8 @@ export default function ContactPage() {
             <GhostButton as={Link} to="/login">Login</GhostButton>
           </div>
         </div>
-        <div className="tf-public-surface rounded-lg p-6">
-          <h2 className="text-2xl font-black">Company contact desk</h2>
+        <div className="rounded-lg border border-white/70 bg-white/85 p-6 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/[0.07]">
+          <h2 className="text-2xl font-black text-slate-950 dark:text-white">Company contact desk</h2>
           <div className="mt-6 grid gap-4">
             {[
               [FiMail, 'Email', 'support@taskflow.com'],
@@ -33,11 +33,11 @@ export default function ContactPage() {
               [FiMapPin, 'Office', 'Business Operations Hub, Bengaluru'],
               [FiBriefcase, 'Deployment', 'Railway-ready FastAPI and React build'],
             ].map(([Icon, label, value]) => (
-              <div key={label} className="flex gap-4 rounded-md border border-white/10 bg-slate-950/35 p-4">
-                <Icon className="mt-1 text-cyan-300" />
+              <div key={label} className="flex gap-4 rounded-md border border-slate-200 bg-white/80 p-4 dark:border-white/10 dark:bg-slate-950/35">
+                <Icon className="mt-1 text-cyan-700 dark:text-cyan-300" />
                 <div>
-                  <p className="text-sm text-slate-400">{label}</p>
-                  <p className="font-bold">{value}</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">{label}</p>
+                  <p className="font-bold text-slate-950 dark:text-white">{value}</p>
                 </div>
               </div>
             ))}

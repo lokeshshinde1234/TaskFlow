@@ -22,12 +22,12 @@ export default function SecurityPage() {
         />
         <div className="mt-10 grid gap-5 md:grid-cols-2">
           {securityItems.map(([Icon, title, text]) => (
-            <article key={title} className="tf-public-surface rounded-lg p-6">
+            <article key={title} className="rounded-lg border border-white/70 bg-white/85 p-6 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/[0.07]">
               <div className="grid h-12 w-12 place-items-center rounded-md bg-gradient-to-br from-teal-600 via-blue-600 to-amber-600 text-white">
                 <Icon />
               </div>
-              <h2 className="mt-5 text-xl font-black text-white">{title}</h2>
-              <p className="mt-3 text-sm leading-6 text-slate-300">{text}</p>
+              <h2 className="mt-5 text-xl font-black text-slate-950 dark:text-white">{title}</h2>
+              <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">{text}</p>
             </article>
           ))}
         </div>

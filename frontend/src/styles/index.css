@@ -133,16 +133,16 @@ body {
 .tf-public-page {
   background:
     url("../assets/taskflow-transparent-bg.svg") center top / min(1500px, 120vw) auto no-repeat,
-    radial-gradient(circle at 12% 8%, rgba(45, 212, 191, 0.18), transparent 28%),
-    radial-gradient(circle at 88% 10%, rgba(244, 114, 182, 0.13), transparent 26%),
-    radial-gradient(circle at 48% 38%, rgba(59, 130, 246, 0.16), transparent 34%),
-    linear-gradient(180deg, #050b16 0%, #071827 42%, #101827 72%, #17111f 100%);
+    radial-gradient(circle at 12% 8%, rgba(20, 184, 166, 0.18), transparent 28%),
+    radial-gradient(circle at 88% 10%, rgba(244, 114, 182, 0.11), transparent 26%),
+    radial-gradient(circle at 48% 38%, rgba(59, 130, 246, 0.13), transparent 34%),
+    linear-gradient(180deg, #f8fbff 0%, #eef7f5 48%, #fff7ed 100%);
 }
 
 .tf-public-surface {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.075);
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 24px 70px rgba(21, 49, 88, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(18px);
 }
 
@@ -231,37 +231,6 @@ select:not(.dark) option {
   color: #1f2937 !important;
 }
 
-.tf-public-page input[type="text"],
-.tf-public-page input[type="email"],
-.tf-public-page input[type="password"],
-.tf-public-page input[type="tel"],
-.tf-public-page input[type="time"],
-.tf-public-page input[type="number"],
-.tf-public-page input[type="date"],
-.tf-public-page input[type="url"],
-.tf-public-page textarea,
-.tf-public-page select,
-.auth-dark-panel input[type="text"],
-.auth-dark-panel input[type="email"],
-.auth-dark-panel input[type="password"],
-.auth-dark-panel input[type="tel"],
-.auth-dark-panel input[type="time"],
-.auth-dark-panel input[type="number"],
-.auth-dark-panel input[type="date"],
-.auth-dark-panel input[type="url"],
-.auth-dark-panel textarea,
-.auth-dark-panel select {
-  background-color: rgba(255, 255, 255, 0.08) !important;
-  color: #ffffff !important;
-}
-
-.tf-public-page input:-webkit-autofill,
-.auth-dark-panel input:-webkit-autofill {
-  -webkit-text-fill-color: #ffffff !important;
-  box-shadow: 0 0 0 1000px rgba(15, 23, 42, 0.94) inset !important;
-  caret-color: #ffffff;
-}
-
 /* Ensure text is visible in dark mode */
 .dark input[type="text"],
 .dark input[type="email"],
@@ -287,25 +256,21 @@ textarea::placeholder {
 
 .dark input::placeholder,
 .dark textarea::placeholder {
-  color: #6b7280 !important;
+  color: #cbd5e1 !important;
 }
 
-.auth-field,
-.auth-field:not(.dark),
-.tf-public-page .auth-field,
-.auth-dark-panel .auth-field {
-  background-color: rgba(255, 255, 255, 0.08) !important;
-  color: #ffffff !important;
-  border-color: rgba(255, 255, 255, 0.12) !important;
+.tf-form-field input,
+.tf-form-field textarea {
+  background-color: transparent !important;
 }
 
-.auth-field::placeholder {
-  color: rgba(255, 255, 255, 0.82) !important;
+.tf-form-field input::placeholder,
+.tf-form-field textarea::placeholder {
+  color: #64748b !important;
   opacity: 1 !important;
 }
 
-.auth-field:-webkit-autofill {
-  -webkit-text-fill-color: #ffffff !important;
-  box-shadow: 0 0 0 1000px rgba(15, 23, 42, 0.96) inset !important;
-  caret-color: #ffffff !important;
+.dark .tf-form-field input::placeholder,
+.dark .tf-form-field textarea::placeholder {
+  color: #cbd5e1 !important;
 }

@@ -2,7 +2,7 @@ import React from 'react';
 
 export function AuroraScene({ children, className = '' }) {
   return (
-    <div className={`relative overflow-hidden bg-[linear-gradient(135deg,#07111f_0%,#0f2f3a_45%,#3b1f3d_100%)] text-white ${className}`}>
+    <div className={`relative overflow-hidden bg-[linear-gradient(135deg,#f8fbff_0%,#ecfeff_46%,#fff7ed_100%)] text-slate-950 dark:bg-[linear-gradient(135deg,#07111f_0%,#0f2f3a_45%,#3b1f3d_100%)] dark:text-white ${className}`}>
       <div className="tf-grid" />
       <div className="tf-aurora tf-aurora-one" />
       <div className="tf-aurora tf-aurora-two" />
@@ -14,7 +14,7 @@ export function AuroraScene({ children, className = '' }) {
 
 export function GlassPanel({ children, className = '' }) {
   return (
-    <div className={`rounded-lg border border-white/16 bg-white/[0.10] shadow-hyper backdrop-blur-xl ${className}`}>
+    <div className={`rounded-lg border border-white/70 bg-white/85 shadow-hyper backdrop-blur-xl dark:border-white/16 dark:bg-white/[0.10] ${className}`}>
       {children}
     </div>
   );
@@ -44,10 +44,10 @@ export function GhostButton({ children, className = '', as: Component = 'button'
 
 export function StatTile({ icon: Icon, label, value, tone = 'cyan', detail }) {
   const tones = {
-    cyan: 'from-cyan-400/20 to-blue-500/10 text-cyan-300',
-    green: 'from-emerald-400/20 to-teal-500/10 text-emerald-300',
-    amber: 'from-amber-400/20 to-orange-500/10 text-amber-300',
-    rose: 'from-rose-400/20 to-fuchsia-500/10 text-rose-300',
+    cyan: 'from-cyan-100 to-blue-50 text-cyan-700 dark:from-cyan-400/20 dark:to-blue-500/10 dark:text-cyan-300',
+    green: 'from-emerald-100 to-teal-50 text-emerald-700 dark:from-emerald-400/20 dark:to-teal-500/10 dark:text-emerald-300',
+    amber: 'from-amber-100 to-orange-50 text-amber-700 dark:from-amber-400/20 dark:to-orange-500/10 dark:text-amber-300',
+    rose: 'from-rose-100 to-fuchsia-50 text-rose-700 dark:from-rose-400/20 dark:to-fuchsia-500/10 dark:text-rose-300',
   };
 
   return (
@@ -56,8 +56,8 @@ export function StatTile({ icon: Icon, label, value, tone = 'cyan', detail }) {
         {Icon && <Icon />}
       </div>
       <p className="mt-5 text-3xl font-black tracking-normal">{value}</p>
-      <p className="mt-1 text-sm text-slate-300">{label}</p>
-      {detail && <p className="mt-3 text-xs text-slate-400">{detail}</p>}
+      <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{label}</p>
+      {detail && <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">{detail}</p>}
     </GlassPanel>
   );
 }
@@ -107,9 +107,9 @@ export function DevicePreview({ compact = false }) {
 export function SectionHeader({ eyebrow, title, text, center = false }) {
   return (
     <div className={center ? 'mx-auto max-w-3xl text-center' : 'max-w-4xl'}>
-      {eyebrow && <p className="text-sm font-black uppercase tracking-wider text-cyan-300">{eyebrow}</p>}
-      <h1 className="mt-3 text-4xl font-black leading-tight tracking-normal text-white sm:text-5xl">{title}</h1>
-      {text && <p className="mt-5 text-lg leading-8 text-slate-300">{text}</p>}
+      {eyebrow && <p className="text-sm font-black uppercase tracking-wider text-cyan-600 dark:text-cyan-300">{eyebrow}</p>}
+      <h1 className="mt-3 text-4xl font-black leading-tight tracking-normal text-slate-950 sm:text-5xl dark:text-white">{title}</h1>
+      {text && <p className="mt-5 text-lg leading-8 text-slate-600 dark:text-slate-300">{text}</p>}
     </div>
   );
 }
