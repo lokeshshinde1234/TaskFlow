@@ -300,7 +300,8 @@ textarea::placeholder {
 }
 
 .auth-field::placeholder {
-  color: #64748b !important;
+  color: rgba(255, 255, 255, 0.82) !important;
+  opacity: 1 !important;
 }
 
 .auth-field:-webkit-autofill {
