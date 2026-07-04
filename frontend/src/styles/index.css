@@ -1,0 +1,260 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: #f3f7fb;
+  color: #102033;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.dark body {
+  background: #020617;
+  color: #e2e8f0;
+}
+
+.leaflet-container {
+  height: 100%;
+  min-height: 100%;
+  width: 100%;
+  z-index: 0;
+  background: #e2e8f0;
+}
+
+
+::selection {
+  background: rgba(34, 211, 238, 0.28);
+}
+
+.shadow-hyper {
+  box-shadow: 0 24px 70px rgba(21, 49, 88, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.tf-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(to bottom, black, transparent 82%);
+}
+
+.tf-grid::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("../assets/taskflow-transparent-bg.svg");
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: min(1500px, 120vw) auto;
+  opacity: 0.9;
+}
+
+.tf-aurora {
+  position: absolute;
+  width: 52rem;
+  height: 52rem;
+  border-radius: 999px;
+  filter: blur(58px);
+  opacity: 0.52;
+  animation: tf-drift 15s ease-in-out infinite alternate;
+}
+
+.tf-aurora-one {
+  left: -18rem;
+  top: -24rem;
+  background: radial-gradient(circle, rgba(45, 212, 191, 0.74), rgba(59, 130, 246, 0.32) 44%, transparent 70%);
+}
+
+.tf-aurora-two {
+  right: -20rem;
+  top: 8rem;
+  background: radial-gradient(circle, rgba(244, 114, 182, 0.38), rgba(251, 191, 36, 0.22) 48%, transparent 72%);
+  animation-delay: -6s;
+}
+
+.tf-scanline {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.035), transparent);
+  background-size: 100% 8px;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.tf-kinetic {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0f766e, #2563eb 45%, #c2410c);
+}
+
+.tf-kinetic::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.38), transparent);
+  transform: translateX(-120%);
+  transition: transform 600ms ease;
+}
+
+.tf-kinetic:hover::before {
+  transform: translateX(120%);
+}
+
+.tf-kinetic > * {
+  position: relative;
+}
+
+.tf-float-row {
+  animation: tf-float 4.5s ease-in-out infinite;
+}
+
+.tf-mesh-page {
+  background:
+    url("../assets/taskflow-transparent-bg.svg") center top / min(1500px, 120vw) auto no-repeat,
+    radial-gradient(circle at 10% 10%, rgba(20, 184, 166, 0.22), transparent 30%),
+    radial-gradient(circle at 86% 8%, rgba(244, 114, 182, 0.16), transparent 28%),
+    radial-gradient(circle at 50% 42%, rgba(59, 130, 246, 0.13), transparent 34%),
+    linear-gradient(180deg, #f8fbff 0%, #eef7f5 48%, #fff7ed 100%);
+}
+
+.tf-public-page {
+  background:
+    url("../assets/taskflow-transparent-bg.svg") center top / min(1500px, 120vw) auto no-repeat,
+    radial-gradient(circle at 12% 8%, rgba(45, 212, 191, 0.18), transparent 28%),
+    radial-gradient(circle at 88% 10%, rgba(244, 114, 182, 0.13), transparent 26%),
+    radial-gradient(circle at 48% 38%, rgba(59, 130, 246, 0.16), transparent 34%),
+    linear-gradient(180deg, #050b16 0%, #071827 42%, #101827 72%, #17111f 100%);
+}
+
+.tf-public-surface {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.075);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(18px);
+}
+
+.tf-public-band {
+  background:
+    radial-gradient(circle at 12% 20%, rgba(20, 184, 166, 0.13), transparent 28%),
+    radial-gradient(circle at 88% 22%, rgba(251, 191, 36, 0.08), transparent 26%),
+    rgba(255, 255, 255, 0.035);
+}
+
+.dark .tf-mesh-page {
+  background:
+    url("../assets/taskflow-transparent-bg.svg") center top / min(1500px, 120vw) auto no-repeat,
+    radial-gradient(circle at 16% 10%, rgba(45, 212, 191, 0.17), transparent 30%),
+    radial-gradient(circle at 82% 12%, rgba(244, 114, 182, 0.12), transparent 28%),
+    radial-gradient(circle at 42% 44%, rgba(37, 99, 235, 0.16), transparent 32%),
+    linear-gradient(180deg, #07111f 0%, #111827 58%, #1f2937 100%);
+}
+
+.tf-form-field {
+  min-height: 44px;
+  border: 1px solid #ced0d4;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #1c1e21;
+  box-shadow: 0 0 0 rgba(20, 22, 26, 0);
+  transition: border-color 180ms ease-out, box-shadow 180ms ease-out, transform 180ms ease-out, background-color 180ms ease-out;
+}
+
+.tf-form-field:hover {
+  border-color: rgba(24, 118, 242, 0.45);
+  background: #ffffff;
+  box-shadow: rgba(20, 22, 26, 0.14) 0 8px 22px -14px, rgba(24, 118, 242, 0.16) 0 0 0 3px;
+  transform: translateY(-1px);
+}
+
+.tf-form-field:focus-within,
+.tf-form-field:has(input:focus),
+.tf-form-field:has(textarea:focus) {
+  border-color: #1876f2;
+  box-shadow: rgba(20, 22, 26, 0.18) 0 10px 24px -16px, rgba(24, 118, 242, 0.22) 0 0 0 4px;
+}
+
+.tf-form-field input,
+.tf-form-field textarea {
+  color: inherit;
+}
+
+.dark .tf-form-field {
+  border-color: rgba(222, 227, 233, 0.22);
+  background: rgba(7, 17, 31, 0.72);
+  color: #ffffff;
+}
+
+.dark .tf-form-field:hover,
+.dark .tf-form-field:focus-within {
+  border-color: rgba(103, 232, 249, 0.6);
+  background: rgba(7, 17, 31, 0.9);
+  box-shadow: rgba(34, 211, 238, 0.18) 0 0 0 4px, rgba(0, 0, 0, 0.26) 0 12px 28px -18px;
+}
+
+@keyframes tf-drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(4rem, 2rem, 0) scale(1.08); }
+}
+
+@keyframes tf-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* Light mode fixes for form elements - override Tailwind's bg-transparent */
+input[type="text"]:not(.dark),
+input[type="email"]:not(.dark),
+input[type="number"]:not(.dark),
+input[type="date"]:not(.dark),
+input[type="url"]:not(.dark),
+textarea:not(.dark),
+select:not(.dark) {
+  background-color: white !important;
+  color: #1f2937 !important;
+}
+
+select:not(.dark) option {
+  background-color: white !important;
+  color: #1f2937 !important;
+}
+
+/* Ensure text is visible in dark mode */
+.dark input[type="text"],
+.dark input[type="email"],
+.dark input[type="number"],
+.dark input[type="date"],
+.dark input[type="url"],
+.dark textarea,
+.dark select {
+  background-color: rgba(30, 41, 59, 0.9) !important;
+  color: white !important;
+}
+
+.dark select option {
+  background-color: #1e293b !important;
+  color: white !important;
+}
+
+/* Placeholder text visibility */
+input::placeholder,
+textarea::placeholder {
+  color: #9ca3af !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #6b7280 !important;
+}

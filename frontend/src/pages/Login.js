@@ -1,0 +1,147 @@
+import React, { useContext, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { FiArrowLeft, FiEye, FiEyeOff, FiLock, FiMail, FiShield } from 'react-icons/fi';
+import { AuroraScene, DevicePreview, GhostButton, KineticButton } from '../components/ReactBitsUI';
+import { AuthContext } from '../context/AuthContext';
+import { authAPI } from '../services/api';
+import { getLoginRedirectPath } from '../utils/roles';
+
+export default function Login() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { login } = useContext(AuthContext);
+  const [form, setForm] = useState({ email: location.state?.email || '', password: '' });
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
+  const [warning, setWarning] = useState('');
+  const [authMessage, setAuthMessage] = useState(location.state?.message || sessionStorage.getItem('auth_message') || '');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setError('');
+    setAuthMessage('');
+    sessionStorage.removeItem('auth_message');
+    setLoading(true);
+    try {
+      const response = await authAPI.login(form.email, form.password);
+      login(response.data);
+      navigate(getLoginRedirectPath(form.email, response.data));
+    } catch (err) {
+      setError(err.response?.data?.detail || 'Invalid email or password');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <AuroraScene className="min-h-screen px-4 py-10">
+      <div className="mx-auto grid min-h-[calc(100vh-5rem)] max-w-6xl overflow-hidden rounded-lg border border-white/12 bg-white/[0.08] shadow-hyper backdrop-blur-xl md:grid-cols-2">
+        <section className="hidden p-8 text-white md:flex md:flex-col md:justify-between">
+          <Link to="/" className="text-2xl font-black">TaskFlow</Link>
+          <div className="grid gap-6">
+            <div>
+              <p className="mb-3 inline-flex items-center gap-2 rounded-md bg-cyan-300/10 px-3 py-2 text-sm text-cyan-100"><FiShield /> Role-secure access</p>
+              <h1 className="text-4xl font-black leading-tight">Secure access for every role.</h1>
+              <p className="mt-4 text-slate-300">Employees use attendance tools. Founder Admins manage one company. Super Admins oversee every registered company.</p>
+            </div>
+            <DevicePreview compact />
+          </div>
+          <p className="text-sm text-slate-400">JWT protected routes with bcrypt password verification.</p>
+        </section>
+
+        <section className="flex items-center border-l border-white/10 bg-slate-950/72 p-6 text-white backdrop-blur-xl sm:p-10">
+          <div className="w-full">
+            <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 hover:text-cyan-100">
+                <FiArrowLeft /> Home
+              </Link>
+            </div>
+            <Link to="/" className="mb-4 block text-2xl font-black md:hidden">TaskFlow</Link>
+            <h2 className="text-3xl font-black text-white">Login</h2>
+            <p className="mt-2 text-slate-300">Company admins open the workspace to add and manage employees.</p>
+
+            <form onSubmit={handleSubmit} className="mt-8 grid gap-5">
+              {authMessage && (
+                <div className="rounded-md border border-emerald-300/30 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-200">
+                  {authMessage}
+                </div>
+              )}
+
+              {error && (
+                <div className="rounded-md border border-rose-300/30 bg-rose-400/10 px-4 py-3 text-sm text-rose-200">
+                  {error}
+                </div>
+              )}
+
+              <label className="grid gap-2 text-sm font-semibold text-slate-200">
+                Email address
+                <span className="flex min-h-11 items-center gap-3 rounded-lg border border-white/12 bg-white/[0.08] px-3 py-3 text-white shadow-sm transition focus-within:border-cyan-300/60 focus-within:ring-4 focus-within:ring-cyan-300/10">
+                  <FiMail className="text-cyan-300" />
+                  <input
+                    type="email"
+                    value={form.email}
+                    onChange={(event) => {
+                      setForm({ ...form, email: event.target.value });
+                      setError('');
+                      setAuthMessage('');
+                    }}
+                    className="w-full bg-transparent text-white outline-none placeholder:text-slate-500"
+                    placeholder="you@company.com"
+                    required
+                  />
+                </span>
+              </label>
+              <label className="grid gap-2 text-sm font-semibold text-slate-200">
+                Password
+                <span className="flex min-h-11 items-center gap-3 rounded-lg border border-white/12 bg-white/[0.08] px-3 py-3 text-white shadow-sm transition focus-within:border-cyan-300/60 focus-within:ring-4 focus-within:ring-cyan-300/10">
+                  <FiLock className="text-cyan-300" />
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    value={form.password}
+                    onChange={(event) => {
+                      const password = event.target.value;
+                      setForm({ ...form, password });
+                      setError('');
+                      setAuthMessage('');
+                      if (password && password.length < 8) {
+                        setWarning('Password looks weak. Use at least 8 characters for a stronger password.');
+                      } else {
+                        setWarning('');
+                      }
+                    }}
+                    className="w-full bg-transparent text-white outline-none placeholder:text-slate-500"
+                    placeholder="Your password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((value) => !value)}
+                    className="rounded p-1 text-slate-300 transition hover:text-cyan-200"
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  >
+                    {showPassword ? <FiEyeOff /> : <FiEye />}
+                  </button>
+                </span>
+                  {warning && <p className="text-sm text-amber-300">{warning}</p>}
+                </label>
+
+              <KineticButton
+                type="submit"
+                disabled={loading}
+                className="bg-gradient-to-r from-blue-600 via-blue-600 to-blue-700 shadow-blue-500/30 hover:shadow-[0_24px_50px_-24px_rgba(59,130,246,0.5)]"
+              >
+                {loading ? 'Signing in...' : 'Sign in'}
+              </KineticButton>
+            </form>
+
+            <div className="mt-6 flex flex-col gap-2 text-sm text-slate-300 sm:flex-row sm:items-center sm:justify-between">
+              <GhostButton as={Link} to="/signup" className="px-3 py-2 text-sm shadow-none bg-cyan-400 text-slate-950 hover:bg-cyan-300">Employee signup</GhostButton>
+              <Link to="/company-onboarding" className="font-semibold text-cyan-300 hover:text-cyan-100">Register a company</Link>
+            </div>
+          </div>
+        </section>
+      </div>
+    </AuroraScene>
+  );
+}
