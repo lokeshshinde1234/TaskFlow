@@ -175,7 +175,7 @@ export default function CompanyOnboarding() {
                         placeholder={placeholder}
                         required
                         autoComplete="new-password"
-                        className="w-full bg-transparent outline-none"
+                        className="auth-field w-full rounded-md border-0 bg-transparent text-white outline-none placeholder:text-slate-500"
                       />
                       {form.password && (
                         <button
@@ -206,7 +206,7 @@ export default function CompanyOnboarding() {
                     onChange={update}
                     placeholder={placeholder}
                     required={name !== 'logo_url'}
-                    className="min-h-11 rounded-lg border border-white/12 bg-white/[0.08] px-3 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300/60 focus:ring-4 focus:ring-cyan-300/10"
+                    className="auth-field min-h-11 rounded-lg border border-white/12 bg-white/[0.08] px-3 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300/60 focus:ring-4 focus:ring-cyan-300/10"
                   />
                 </label>
               );
@@ -242,7 +242,7 @@ export default function CompanyOnboarding() {
                 onChange={update}
                 rows={4}
                 placeholder="What your company does, office policies, or onboarding notes"
-                className="min-h-11 rounded-lg border border-white/12 bg-white/[0.08] px-3 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300/60 focus:ring-4 focus:ring-cyan-300/10"
+                className="auth-field min-h-11 rounded-lg border border-white/12 bg-white/[0.08] px-3 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300/60 focus:ring-4 focus:ring-cyan-300/10"
               />
             </label>
             {error && <div className="rounded-md border border-red-300/30 bg-red-400/10 px-4 py-3 text-sm text-red-200 md:col-span-2">{error}</div>}

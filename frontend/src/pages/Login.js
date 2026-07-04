@@ -86,7 +86,7 @@ export default function Login() {
                       setError('');
                       setAuthMessage('');
                     }}
-                    className="w-full bg-transparent text-white outline-none placeholder:text-slate-500"
+                    className="auth-field w-full rounded-md border-0 bg-transparent text-white outline-none placeholder:text-slate-500"
                     placeholder="you@company.com"
                     required
                   />
@@ -110,7 +110,7 @@ export default function Login() {
                         setWarning('');
                       }
                     }}
-                    className="w-full bg-transparent text-white outline-none placeholder:text-slate-500"
+                    className="auth-field w-full rounded-md border-0 bg-transparent text-white outline-none placeholder:text-slate-500"
                     placeholder="Your password"
                     required
                   />

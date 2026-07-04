@@ -289,3 +289,22 @@ textarea::placeholder {
 .dark textarea::placeholder {
   color: #6b7280 !important;
 }
+
+.auth-field,
+.auth-field:not(.dark),
+.tf-public-page .auth-field,
+.auth-dark-panel .auth-field {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.auth-field::placeholder {
+  color: #64748b !important;
+}
+
+.auth-field:-webkit-autofill {
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 0 0 1000px rgba(15, 23, 42, 0.96) inset !important;
+  caret-color: #ffffff !important;
+}
