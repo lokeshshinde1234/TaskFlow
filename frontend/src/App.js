@@ -22,12 +22,14 @@ import EmployeeAttendanceReportPage from './pages/EmployeeAttendanceReportPage';
 import EnterpriseAdminConsole from './pages/EnterpriseAdminConsole';
 import SalaryPage from './pages/SalaryPage';
 import SuperAdminSalaryPage from './pages/SuperAdminSalaryPage';
+import SEOManager from './components/SEOManager';
 import './styles/App.css';
 
 function App() {
   return (
     <AuthProvider>
       <Router>
+        <SEOManager />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/about" element={<AboutPage />} />
