@@ -15,11 +15,11 @@
 **/node_modules
 frontend/build
 
-logs
+/logs
 **/logs
-data
-storage
-backend/storage
+/data
+/storage
+/backend/storage
 
 *.db
 *.sqlite

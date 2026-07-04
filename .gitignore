@@ -21,10 +21,10 @@ build/
 coverage/
 
 # Logs and local data
-logs/
-data/
-storage/
-backend/storage/
+/logs/
+/data/
+/storage/
+/backend/storage/
 *.log
 *.db
 *.sqlite
