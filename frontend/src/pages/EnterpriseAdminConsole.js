@@ -136,7 +136,6 @@ export default function EnterpriseAdminConsole() {
   );
 
   return (
-    <div className="dark">
     <div className="min-h-screen bg-slate-50 p-4 text-slate-950 dark:bg-slate-950 dark:text-white sm:p-6">
       <div className="mx-auto max-w-7xl">
         <header className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -286,7 +285,6 @@ export default function EnterpriseAdminConsole() {
           </div>
         )}
       </div>
-    </div>
     </div>
   );
 }

@@ -129,30 +129,29 @@ export default function CompanyOnboarding() {
   };
 
   return (
-    <div className="dark">
-      <div className="tf-mesh-page min-h-screen text-white">
+    <div className="tf-mesh-page min-h-screen text-slate-950 dark:text-white">
         <SiteNavbar />
         <AuroraScene className="min-h-screen px-4 py-8">
           <div className="mx-auto max-w-6xl">
-            <div className="mt-6 grid overflow-hidden rounded-lg border border-white/12 bg-white/[0.08] shadow-hyper backdrop-blur-xl lg:grid-cols-[0.9fr_1.1fr]">
+            <div className="mt-6 grid overflow-hidden rounded-lg border border-white/70 bg-white/75 shadow-hyper backdrop-blur-xl dark:border-white/12 dark:bg-white/[0.08] lg:grid-cols-[0.9fr_1.1fr]">
               <div className="hidden p-6 lg:block">
                 <DevicePreview compact />
-                <div className="mt-5 rounded-lg border border-white/10 bg-white/[0.06] p-5">
-                  <p className="text-sm font-semibold text-cyan-100">Workspace setup</p>
-                  <h2 className="mt-2 text-2xl font-black text-white">Your first account becomes Founder Admin.</h2>
+                <div className="mt-5 rounded-lg border border-teal-100 bg-white/85 p-5 dark:border-white/10 dark:bg-white/[0.06]">
+                  <p className="text-sm font-semibold text-cyan-700 dark:text-cyan-100">Workspace setup</p>
+                  <h2 className="mt-2 text-2xl font-black text-slate-950 dark:text-white">Your first account becomes Founder Admin.</h2>
                 </div>
               </div>
 
-              <form onSubmit={handleSubmit} className="grid gap-5 border-l border-white/10 bg-slate-950/85 p-6 text-white shadow-[inset_1px_0_0_rgba(255,255,255,0.04)] backdrop-blur-xl md:grid-cols-2">
+              <form onSubmit={handleSubmit} className="grid gap-5 border-l border-slate-200 bg-white/95 p-6 text-slate-950 shadow-[inset_1px_0_0_rgba(15,23,42,0.05)] backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/85 dark:text-white md:grid-cols-2">
             <div className="md:col-span-2">
               <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 hover:text-cyan-100">
+                <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold text-cyan-700 hover:text-cyan-900 dark:text-cyan-300 dark:hover:text-cyan-100">
                   <FiArrowLeft /> Home
                 </Link>
               </div>
-              <p className="inline-flex items-center gap-2 text-sm font-bold uppercase text-cyan-300"><FiBriefcase /> Company onboarding</p>
+              <p className="inline-flex items-center gap-2 text-sm font-bold uppercase text-cyan-700 dark:text-cyan-300"><FiBriefcase /> Company onboarding</p>
               <h1 className="mt-3 text-3xl font-black">Create your company workspace</h1>
-              <p className="mt-2 text-slate-300">Your company details are saved in the database, and this login becomes the Founder Admin account.</p>
+              <p className="mt-2 text-slate-600 dark:text-slate-300">Your company details are saved in the database, and this login becomes the Founder Admin account.</p>
             </div>
             {[
               ['name', 'Company name', 'Acme Operations'],
@@ -165,7 +164,7 @@ export default function CompanyOnboarding() {
             ].map(([name, label, placeholder]) => {
               if (name === 'password') {
                 return (
-                  <label key={name} className="grid gap-2 text-sm font-semibold text-slate-200">
+                  <label key={name} className="grid gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
                     {label}
                     <span className="tf-form-field flex min-h-11 items-center gap-3 px-3 py-3 shadow-sm">
                       <input
@@ -176,7 +175,7 @@ export default function CompanyOnboarding() {
                         placeholder={placeholder}
                         required
                         autoComplete="new-password"
-                        className="w-full rounded-md border-0 bg-transparent text-white outline-none placeholder:text-slate-300"
+                        className="w-full rounded-md border-0 bg-transparent text-slate-950 outline-none placeholder:text-slate-500 dark:text-white dark:placeholder:text-slate-300"
                       />
                       {form.password && (
                         <button
@@ -195,7 +194,7 @@ export default function CompanyOnboarding() {
               }
 
               return (
-                <label key={name} className="grid gap-2 text-sm font-semibold text-slate-200">
+                <label key={name} className="grid gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
                   {label}
                   <input
                     name={name}
@@ -207,15 +206,15 @@ export default function CompanyOnboarding() {
                     onChange={update}
                     placeholder={placeholder}
                     required={name !== 'logo_url'}
-                    className="tf-form-field px-3 py-3 text-white outline-none placeholder:text-slate-300 [color-scheme:dark]"
+                    className="tf-form-field px-3 py-3 text-slate-950 outline-none placeholder:text-slate-500 dark:text-white dark:placeholder:text-slate-300 dark:[color-scheme:dark]"
                   />
                 </label>
               );
             })}
-            <div className="grid gap-3 text-sm font-semibold text-slate-200 md:col-span-2">
+            <div className="grid gap-3 text-sm font-semibold text-slate-700 dark:text-slate-200 md:col-span-2">
               Company logo
-              <div className="grid gap-4 rounded-lg border border-dashed border-cyan-300/40 bg-cyan-300/10 p-4 md:grid-cols-[120px_1fr]">
-                <div className="grid h-28 w-28 place-items-center overflow-hidden rounded-lg border border-white/10 bg-slate-900 text-cyan-200 shadow-sm">
+              <div className="grid gap-4 rounded-lg border border-dashed border-cyan-300/70 bg-cyan-50/80 p-4 dark:border-cyan-300/40 dark:bg-cyan-300/10 md:grid-cols-[120px_1fr]">
+                <div className="grid h-28 w-28 place-items-center overflow-hidden rounded-lg border border-slate-200 bg-white text-cyan-700 shadow-sm dark:border-white/10 dark:bg-slate-900 dark:text-cyan-200">
                   {logoPreview || form.logo_url ? (
                     <img src={logoPreview || form.logo_url} alt="Company logo preview" className="h-full w-full object-contain p-2" />
                   ) : (
@@ -228,14 +227,14 @@ export default function CompanyOnboarding() {
                     {uploadingLogo ? 'Uploading logo...' : 'Choose logo file'}
                     <input type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml" onChange={handleLogoFile} className="sr-only" disabled={uploadingLogo} />
                   </label>
-                  <p className="text-sm font-medium leading-6 text-slate-300">
+                  <p className="text-sm font-medium leading-6 text-slate-600 dark:text-slate-300">
                     Upload a PNG, JPG, WEBP, or SVG logo up to 2MB. This logo will appear on company, employee, and Super Admin views.
                   </p>
                   {form.logo_url && <p className="break-all text-xs font-semibold text-emerald-700 dark:text-emerald-300">Logo saved and ready.</p>}
                 </div>
               </div>
             </div>
-            <label className="grid gap-2 text-sm font-semibold text-slate-200 md:col-span-2">
+            <label className="grid gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200 md:col-span-2">
               Company description
               <textarea
                 name="description"
@@ -243,7 +242,7 @@ export default function CompanyOnboarding() {
                 onChange={update}
                 rows={4}
                 placeholder="What your company does, office policies, or onboarding notes"
-                className="tf-form-field px-3 py-3 text-white outline-none placeholder:text-slate-300"
+                className="tf-form-field px-3 py-3 text-slate-950 outline-none placeholder:text-slate-500 dark:text-white dark:placeholder:text-slate-300"
               />
             </label>
             {error && <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-300/30 dark:bg-red-400/10 dark:text-red-200 md:col-span-2">{error}</div>}
@@ -259,7 +258,6 @@ export default function CompanyOnboarding() {
           </div>
         </AuroraScene>
         <SiteFooter />
-      </div>
     </div>
   );
 }

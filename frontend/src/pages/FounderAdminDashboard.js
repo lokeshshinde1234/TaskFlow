@@ -419,21 +419,20 @@ export default function FounderAdminDashboard() {
   };
 
   return (
-    <div className="dark">
-      <div className={`relative min-h-screen overflow-hidden ${isDark ? 'bg-slate-950 text-slate-100' : 'bg-slate-950 text-slate-100'}`}>
+    <div className={`relative min-h-screen overflow-hidden ${isDark ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-950'}`}>
       <div className="pointer-events-none absolute inset-x-0 top-0 h-96 bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.18),_transparent_30%)]" />
       <div className="pointer-events-none absolute right-0 top-28 h-80 w-80 rounded-full bg-cyan-500/10 blur-3xl" />
       <div className="pointer-events-none absolute left-0 top-40 h-80 w-80 rounded-full bg-violet-500/10 blur-3xl" />
 
       <div className="relative lg:flex">
-        <aside className={`fixed inset-y-0 left-0 z-40 hidden w-72 border-r p-6 shadow-2xl lg:block ${isDark ? 'border-slate-800/70 bg-slate-950/95 shadow-slate-950/40' : 'border-slate-800/70 bg-slate-950/95 shadow-slate-950/40'}`}>
+        <aside className={`fixed inset-y-0 left-0 z-40 hidden w-72 border-r p-6 shadow-2xl lg:block ${isDark ? 'border-slate-800/70 bg-slate-950/95 shadow-slate-950/40' : 'border-slate-200 bg-white/95 shadow-slate-200/20'}`}>
           <div className="flex items-center gap-3">
             <div className="rounded-3xl bg-cyan-500/15 p-3 text-cyan-300 shadow-xl shadow-cyan-500/10">
               <FiUsers className="h-6 w-6" />
             </div>
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">TaskFlow Admin</p>
-              <h1 className={isDark ? 'text-2xl font-black text-white' : 'text-2xl font-black text-white'}>Founder Admin</h1>
+              <h1 className={isDark ? 'text-2xl font-black text-white' : 'text-2xl font-black text-slate-950'}>Founder Admin</h1>
             </div>
           </div>
 
@@ -450,7 +449,7 @@ export default function FounderAdminDashboard() {
                 key={id}
                 type="button"
                 onClick={() => (id === 'enterprise' ? navigate('/admin-dashboard/enterprise') : id === 'salary' ? navigate('/founder/salary') : setTab(id))}
-                className={`flex items-center gap-3 rounded-3xl px-4 py-3 text-left text-sm font-semibold transition ${tab === id ? 'bg-cyan-500 text-slate-950 shadow-cyan-500/20' : isDark ? 'text-slate-300 hover:bg-slate-900/80' : 'text-slate-300 hover:bg-slate-900/80'}`}>
+                className={`flex items-center gap-3 rounded-3xl px-4 py-3 text-left text-sm font-semibold transition ${tab === id ? 'bg-cyan-500 text-slate-950 shadow-cyan-500/20' : isDark ? 'text-slate-300 hover:bg-slate-900/80' : 'text-slate-700 hover:bg-slate-100'}`}>
                 <Icon className="text-base" />
                 {label}
               </button>
@@ -458,16 +457,16 @@ export default function FounderAdminDashboard() {
           </nav>
         </aside>
         <div className="lg:pl-80">
-          <header className={`sticky top-0 z-30 border-b backdrop-blur-xl ${isDark ? 'border-slate-800/80 bg-slate-950/95' : 'border-slate-800/80 bg-slate-950/95'}`}>
+          <header className={`sticky top-0 z-30 border-b backdrop-blur-xl ${isDark ? 'border-slate-800/80 bg-slate-950/95' : 'border-slate-200/80 bg-white/95'}`}>
             <div className="flex flex-col gap-4 px-4 py-6 sm:px-6 lg:px-8">
               <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 <div>
                   <p className="text-sm font-semibold uppercase tracking-[0.3em] text-cyan-300">Founder admin dashboard</p>
-                  <h2 className={isDark ? 'mt-3 text-3xl font-black text-white' : 'mt-3 text-3xl font-black text-white'}>{company?.name || 'Company workspace'}</h2>
+                  <h2 className={isDark ? 'mt-3 text-3xl font-black text-white' : 'mt-3 text-3xl font-black text-slate-950'}>{company?.name || 'Company workspace'}</h2>
                   {company && <p className="mt-2 text-sm text-slate-400">{company.email} / {company.phone} / {company.address}</p>}
                 </div>
                 <div className="flex flex-wrap items-center gap-3">
-                  <button type="button" onClick={toggleTheme} className={`rounded-full border p-3 transition ${isDark ? 'border-slate-700 bg-slate-900 text-slate-200 hover:bg-slate-800' : 'border-slate-700 bg-slate-900 text-slate-200 hover:bg-slate-800'}`}>
+                  <button type="button" onClick={toggleTheme} className={`rounded-full border p-3 transition ${isDark ? 'border-slate-700 bg-slate-900 text-slate-200 hover:bg-slate-800' : 'border-slate-300 bg-white/80 text-slate-950 hover:bg-slate-100'}`}>
                     {theme === 'dark' ? <FiSun /> : <FiMoon />}
                   </button>
                   <button type="button" onClick={handleLogout} className="inline-flex items-center gap-2 rounded-full bg-cyan-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400">
@@ -478,7 +477,7 @@ export default function FounderAdminDashboard() {
 
               <div className="hidden lg:grid grid-cols-6 gap-3">
                 {['analytics', 'employees', 'locations', 'salary', 'reports', 'enterprise'].map((id) => (
-                  <button key={id} onClick={() => (id === 'enterprise' ? navigate('/admin-dashboard/enterprise') : id === 'salary' ? navigate('/founder/salary') : setTab(id))} className={`rounded-3xl border px-4 py-3 text-sm font-semibold transition ${tab === id ? 'border-cyan-500 bg-cyan-500/10 text-cyan-300' : isDark ? 'border-slate-800 bg-slate-900/80 text-slate-300 hover:border-cyan-500 hover:text-cyan-300' : 'border-slate-800 bg-slate-900/80 text-slate-300 hover:border-cyan-500 hover:text-cyan-300'}`}>
+                  <button key={id} onClick={() => (id === 'enterprise' ? navigate('/admin-dashboard/enterprise') : id === 'salary' ? navigate('/founder/salary') : setTab(id))} className={`rounded-3xl border px-4 py-3 text-sm font-semibold transition ${tab === id ? 'border-cyan-500 bg-cyan-500/10 text-cyan-300' : isDark ? 'border-slate-800 bg-slate-900/80 text-slate-300 hover:border-cyan-500 hover:text-cyan-300' : 'border-slate-200 bg-white/90 text-slate-700 hover:border-cyan-500 hover:text-cyan-500'}`}>
                     {id}
                   </button>
                 ))}
@@ -924,7 +923,6 @@ export default function FounderAdminDashboard() {
         </main>
       </div>
     </div>
-      </div>
     </div>
   );
 }

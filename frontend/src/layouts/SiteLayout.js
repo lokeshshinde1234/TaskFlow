@@ -4,12 +4,10 @@ import SiteNavbar from '../components/SiteNavbar';
 
 export default function SiteLayout({ children }) {
   return (
-    <div className="dark">
-      <div className="tf-mesh-page min-h-screen text-white">
-        <SiteNavbar />
-        <main>{children}</main>
-        <SiteFooter />
-      </div>
+    <div className="tf-mesh-page min-h-screen text-slate-950 dark:text-white">
+      <SiteNavbar />
+      <main>{children}</main>
+      <SiteFooter />
     </div>
   );
 }
