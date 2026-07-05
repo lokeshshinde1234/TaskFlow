@@ -3,7 +3,7 @@ import L from 'leaflet';
 import { Circle, MapContainer, Marker, Popup, TileLayer, useMap, useMapEvents } from 'react-leaflet';
 import { useNavigate } from 'react-router-dom';
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { FiCrosshair, FiDollarSign, FiDownload, FiEdit2, FiImage, FiLogOut, FiMapPin, FiPlus, FiSave, FiSearch, FiTrash2, FiUploadCloud, FiUsers } from 'react-icons/fi';
+import { FiBriefcase, FiCrosshair, FiDollarSign, FiDownload, FiEdit2, FiImage, FiLogOut, FiMapPin, FiPlus, FiSave, FiSearch, FiTrash2, FiUploadCloud, FiUsers } from 'react-icons/fi';
 import { AuthContext } from '../context/AuthContext';
 import { adminAPI, authAPI, employeeAPI, locationAPI, salaryAPI } from '../services/api';
 import selectLocationIcon from '../utils/selectLocationIcon';
@@ -260,12 +260,38 @@ const parseEmployeeImportText = (text, fileName) => {
   return records.map((record, index) => normalizeImportedEmployee(record, index + 2));
 };
 
+function CompanyLogo({ src, name, className = 'h-20 w-20', iconClassName = 'text-2xl' }) {
+  const [hasError, setHasError] = useState(false);
+  const initials = String(name || 'TF').trim().slice(0, 2).toUpperCase();
+
+  useEffect(() => {
+    setHasError(false);
+  }, [src]);
+
+  return (
+    <div className={`grid shrink-0 place-items-center overflow-hidden rounded-lg border border-white/15 bg-slate-950/80 text-cyan-200 shadow-inner ${className}`}>
+      {src && !hasError ? (
+        <img
+          src={src}
+          alt={`${name || 'Company'} logo`}
+          className="block h-full w-full object-contain p-2"
+          loading="eager"
+          onError={() => setHasError(true)}
+        />
+      ) : (
+        <span className={`font-black ${iconClassName}`}>{initials || <FiImage />}</span>
+      )}
+    </div>
+  );
+}
+
 const panelClass = 'rounded-lg border border-white/10 bg-slate-900/88 p-5 shadow-[0_24px_80px_rgba(0,0,0,0.28)] backdrop-blur-xl';
 const sectionClass = 'rounded-lg border border-white/10 bg-slate-900/88 shadow-[0_24px_80px_rgba(0,0,0,0.28)] backdrop-blur-xl';
 const fieldClass = 'mt-2 w-full rounded-md border border-slate-700 bg-slate-950/70 px-3 py-3 text-white placeholder:text-slate-500 outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20';
 const compactFieldClass = 'w-full rounded-md border border-slate-700 bg-slate-950/70 px-3 py-2 text-sm text-white placeholder:text-slate-500 outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20';
 const labelClass = 'text-sm font-semibold text-slate-300';
 const founderTabs = [
+  ['profile', 'Profile', 'Company identity, logo, and workspace details', FiBriefcase],
   ['analytics', 'Command', 'Operational health and workforce signals', FiUsers],
   ['employees', 'People', 'Create, search, edit, and audit employee records', FiUsers],
   ['locations', 'Geo Ops', 'Working hours, geofence, and live map control', FiMapPin],
@@ -275,6 +301,7 @@ const founderTabs = [
 ];
 
 const tabDetails = {
+  profile: ['Company Profile', 'Manage company identity, logo, contact details, and workspace information.'],
   analytics: ['Command Center', 'Live business posture for your company workspace.'],
   employees: ['People Operations', 'A clean control room for employee identity, roles, departments, and status.'],
   locations: ['Geo Operations', 'Set company attendance timing and geofence behavior from one operational map.'],
@@ -772,8 +799,8 @@ export default function FounderAdminDashboard() {
             <div className="mx-auto flex max-w-[1500px] flex-col gap-4 px-4 py-5 sm:px-6 lg:px-8">
               <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 <div>
-                  <p className="text-sm font-black uppercase tracking-[0.3em] text-cyan-300">{currentPage[0]}</p>
-                  <h2 className="mt-2 text-3xl font-black text-white">{company?.name || 'Company workspace'}</h2>
+                  <p className="text-sm font-black uppercase tracking-[0.3em] text-cyan-300">Founder Admin Dashboard</p>
+                  <h2 className="mt-2 text-3xl font-black text-white">{currentPage[0]}</h2>
                   <p className="mt-2 max-w-3xl text-sm text-slate-400">{currentPage[1]}</p>
                 </div>
                 <div className="flex flex-wrap items-center gap-3">
@@ -783,7 +810,7 @@ export default function FounderAdminDashboard() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-7">
                 {founderTabs.map(([id, label]) => (
                   <button key={id} onClick={() => setTab(id)} className={`rounded-md border px-4 py-2.5 text-sm font-bold transition ${tab === id ? 'border-cyan-400/60 bg-cyan-400/12 text-cyan-200' : 'border-white/10 bg-white/[0.03] text-slate-300 hover:border-cyan-400/40 hover:text-cyan-200'}`}>
                     {label}
@@ -796,23 +823,35 @@ export default function FounderAdminDashboard() {
           <main className="mx-auto grid w-full max-w-[1500px] gap-6 p-4 sm:p-6 lg:p-8">
             {message && <div className="rounded-md border border-cyan-400/25 bg-cyan-400/10 px-4 py-3 text-sm font-semibold text-cyan-100">{typeof message === 'string' ? message : JSON.stringify(message)}</div>}
 
-          {company && (
+          {tab === 'profile' && company && (
             <section className="overflow-hidden rounded-lg border border-white/10 bg-[linear-gradient(135deg,rgba(15,23,42,0.96),rgba(8,47,73,0.72),rgba(88,28,135,0.42))] p-6 shadow-[0_28px_100px_rgba(0,0,0,0.35)] backdrop-blur-xl">
-              <div className="grid gap-6 xl:grid-cols-[1fr_420px] xl:items-start">
+              <div className="grid gap-6 xl:grid-cols-[1fr_460px] xl:items-start">
                 <div>
-                  <p className="text-sm font-black uppercase tracking-[0.22em] text-cyan-300">Company workspace</p>
-                  <div className="mt-4 flex flex-wrap items-center gap-4">
-                    <div className="grid h-20 w-20 shrink-0 place-items-center overflow-hidden rounded-lg border border-white/15 bg-slate-950/80 text-cyan-200 shadow-inner">
-                      {logoPreview || companyProfileForm.logo_url || company.logo_url ? (
-                        <img src={logoPreview || companyProfileForm.logo_url || company.logo_url} alt={`${company.name} logo`} className="h-full w-full object-contain p-2" />
-                      ) : (
-                        <span className="text-2xl font-black">{(company.name || 'TF').slice(0, 2).toUpperCase()}</span>
-                      )}
-                    </div>
+                  <p className="text-sm font-black uppercase tracking-[0.22em] text-cyan-300">Company identity</p>
+                  <div className="mt-5 flex flex-col gap-5 sm:flex-row sm:items-center">
+                    <CompanyLogo src={logoPreview || companyProfileForm.logo_url || company.logo_url} name={company.name} className="h-28 w-28" iconClassName="text-3xl" />
                     <div>
                       <h3 className="text-3xl font-black text-white">{company.name}</h3>
                       <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-300">{company.description || 'Manage employee records, attendance, salary, and live location data from this workspace.'}</p>
                     </div>
+                  </div>
+                  <div className="mt-6 grid gap-3 md:grid-cols-3">
+                    <div className="rounded-lg border border-white/10 bg-slate-950/55 p-4">
+                      <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Email</p>
+                      <p className="mt-2 break-all text-sm font-semibold text-white">{company.email}</p>
+                    </div>
+                    <div className="rounded-lg border border-white/10 bg-slate-950/55 p-4">
+                      <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Phone</p>
+                      <p className="mt-2 text-sm font-semibold text-white">{company.phone}</p>
+                    </div>
+                    <div className="rounded-lg border border-white/10 bg-slate-950/55 p-4">
+                      <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Working hours</p>
+                      <p className="mt-2 text-sm font-semibold text-white">{company.start_time || '--:--'} to {company.end_time || '--:--'}</p>
+                    </div>
+                  </div>
+                  <div className="mt-3 rounded-lg border border-white/10 bg-slate-950/55 p-4">
+                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Address</p>
+                    <p className="mt-2 text-sm font-semibold text-white">{company.address || '-'}</p>
                   </div>
                   {(!company.start_time || !company.end_time) && (
                     <p className="mt-3 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-800">
@@ -822,13 +861,7 @@ export default function FounderAdminDashboard() {
                 </div>
                 <form onSubmit={submitCompanyProfile} className="rounded-lg border border-white/10 bg-slate-950/65 p-4 shadow-inner">
                   <div className="grid gap-4 sm:grid-cols-[92px_1fr]">
-                    <div className="grid h-20 w-20 place-items-center overflow-hidden rounded-lg border border-white/15 bg-slate-900 text-cyan-200">
-                      {logoPreview || companyProfileForm.logo_url ? (
-                        <img src={logoPreview || companyProfileForm.logo_url} alt="Company logo preview" className="h-full w-full object-contain p-2" />
-                      ) : (
-                        <FiImage className="text-2xl" />
-                      )}
-                    </div>
+                    <CompanyLogo src={logoPreview || companyProfileForm.logo_url} name={companyProfileForm.name || company.name} className="h-20 w-20" iconClassName="text-xl" />
                     <div className="flex flex-col justify-center gap-3">
                       <label className="inline-flex w-fit cursor-pointer items-center gap-2 rounded-md bg-cyan-400 px-4 py-2.5 text-sm font-black text-slate-950 transition hover:bg-cyan-300">
                         <FiUploadCloud />
