@@ -61,9 +61,9 @@ export default function SignupWithOTP() {
           `Verification email sent to ${form.email}. Open Gmail (inbox or spam) and enter the 6-digit code from the email.`
         );
       } else {
-        setSuccess(
-          `OTP created for ${form.email}. SMTP is off, so check the backend terminal for the 6-digit code.`
-        );
+        setOtpSent(false);
+        setTimer(0);
+        setError('Email delivery is not active on the backend. Restart the backend after saving SMTP settings, then send OTP again.');
       }
     } catch (err) {
       if (!err.response) {
