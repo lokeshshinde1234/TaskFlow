@@ -32,6 +32,7 @@ from app.schemas import (
     AttendanceLateReasonUpdate,
     AttendanceResponse,
     CompanyLocationUpdate,
+    CompanyProfileUpdate,
     CompanyRegister,
     CompanyResponse,
     CompanyTimingUpdate,
@@ -807,6 +808,30 @@ def get_company(current_user: User = Depends(require_founder_admin), db: Session
     payload["start_time"] = company.start_time
     payload["end_time"] = company.end_time
     return payload
+
+
+@app.put("/api/company/profile", response_model=CompanyResponse)
+def update_company_profile(
+    payload: CompanyProfileUpdate,
+    current_user: User = Depends(require_founder_admin),
+    db: Session = Depends(get_db),
+):
+    company_id = founder_company_id(current_user, db)
+    company = db.query(Company).filter(Company.id == company_id).first()
+    updates = payload.model_dump(exclude_unset=True)
+
+    for field in ("name", "address", "phone", "logo_url", "description"):
+        if field in updates:
+            setattr(company, field, updates[field])
+
+    company.updated_at = datetime.utcnow()
+    db.commit()
+    db.refresh(company)
+    broadcast_company_update(db, company)
+
+    response = company_realtime_payload(db, company)
+    response["working_hours"] = company.working_hours
+    return response
 
 
 @app.get("/api/company/employee", response_model=CompanyResponse)

@@ -3,7 +3,7 @@ import L from 'leaflet';
 import { Circle, MapContainer, Marker, Popup, TileLayer, useMap, useMapEvents } from 'react-leaflet';
 import { useNavigate } from 'react-router-dom';
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { FiCrosshair, FiDollarSign, FiDownload, FiEdit2, FiLogOut, FiMapPin, FiPlus, FiSave, FiSearch, FiTrash2, FiUsers } from 'react-icons/fi';
+import { FiCrosshair, FiDollarSign, FiDownload, FiEdit2, FiImage, FiLogOut, FiMapPin, FiPlus, FiSave, FiSearch, FiTrash2, FiUploadCloud, FiUsers } from 'react-icons/fi';
 import { AuthContext } from '../context/AuthContext';
 import { adminAPI, authAPI, employeeAPI, locationAPI, salaryAPI } from '../services/api';
 import selectLocationIcon from '../utils/selectLocationIcon';
@@ -59,6 +59,14 @@ const emptyEmployee = {
   date_of_joining: '',
   is_active: true,
   employee_id: '',
+};
+
+const emptyCompanyProfile = {
+  name: '',
+  address: '',
+  phone: '',
+  description: '',
+  logo_url: '',
 };
 
 function CompanyLocationPicker({ selectedPosition, radius, onSelect }) {
@@ -170,6 +178,10 @@ export default function FounderAdminDashboard() {
   const [employeeForm, setEmployeeForm] = useState(emptyEmployee);
   const [editingId, setEditingId] = useState(null);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [companyProfileForm, setCompanyProfileForm] = useState(emptyCompanyProfile);
+  const [logoPreview, setLogoPreview] = useState('');
+  const [uploadingLogo, setUploadingLogo] = useState(false);
+  const [savingCompanyProfile, setSavingCompanyProfile] = useState(false);
   const [salaryForm, setSalaryForm] = useState({ employee_id: '', base_salary: '', bonus: 0, deduction: 0, month: new Date().getMonth() + 1, year: new Date().getFullYear(), status: 'pending' });
   const [message, setMessage] = useState('');
 
@@ -215,6 +227,13 @@ export default function FounderAdminDashboard() {
     setCompanyTimingForm({
       start_time: company.start_time || '',
       end_time: company.end_time || '',
+    });
+    setCompanyProfileForm({
+      name: company.name || '',
+      address: company.address || '',
+      phone: company.phone || '',
+      description: company.description || '',
+      logo_url: company.logo_url || '',
     });
   }, [company]);
 
@@ -408,6 +427,62 @@ export default function FounderAdminDashboard() {
     }
   };
 
+  const handleCompanyLogoFile = async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    setMessage('');
+
+    if (!file.type.startsWith('image/')) {
+      setMessage('Please choose an image file for the company logo.');
+      return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+      setMessage('Logo file must be 2MB or smaller.');
+      return;
+    }
+
+    const previewUrl = URL.createObjectURL(file);
+    setLogoPreview(previewUrl);
+    setUploadingLogo(true);
+
+    try {
+      const response = await authAPI.uploadCompanyLogo(file);
+      setCompanyProfileForm((current) => ({ ...current, logo_url: response.data.logo_url }));
+      setMessage('Logo uploaded. Save company profile to apply it.');
+    } catch (err) {
+      setLogoPreview('');
+      setMessage(handleError(err, 'Unable to upload company logo.'));
+    } finally {
+      setUploadingLogo(false);
+      event.target.value = '';
+    }
+  };
+
+  const submitCompanyProfile = async (event) => {
+    event.preventDefault();
+    setMessage('');
+    setSavingCompanyProfile(true);
+
+    try {
+      const response = await authAPI.updateCompanyProfile({
+        ...companyProfileForm,
+        name: companyProfileForm.name.trim(),
+        address: companyProfileForm.address.trim(),
+        phone: companyProfileForm.phone.trim(),
+        description: companyProfileForm.description.trim(),
+        logo_url: companyProfileForm.logo_url || null,
+      });
+      setCompany(response.data);
+      setLogoPreview('');
+      setMessage('Company profile and logo updated.');
+    } catch (err) {
+      setMessage(handleError(err, 'Unable to update company profile.'));
+    } finally {
+      setSavingCompanyProfile(false);
+    }
+  };
+
   const exportAttendanceCsv = () => {
     const rows = [['Employee ID', 'Employee Name', 'Date', 'Time In', 'Time Out', 'Hours', 'Late Mark', 'Late Reason', 'Checkout Type', 'Checkout Reason', 'Auto Checkout At', 'Company Start Time', 'Company End Time']];
     (analytics?.recent_attendance || []).forEach((record) => rows.push([
@@ -509,13 +584,17 @@ export default function FounderAdminDashboard() {
 
           {company && (
             <section className="overflow-hidden rounded-lg border border-white/10 bg-[linear-gradient(135deg,rgba(15,23,42,0.96),rgba(8,47,73,0.72),rgba(88,28,135,0.42))] p-6 shadow-[0_28px_100px_rgba(0,0,0,0.35)] backdrop-blur-xl">
-              <div className="grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
+              <div className="grid gap-6 xl:grid-cols-[1fr_420px] xl:items-start">
                 <div>
                   <p className="text-sm font-black uppercase tracking-[0.22em] text-cyan-300">Company workspace</p>
                   <div className="mt-4 flex flex-wrap items-center gap-4">
-                    {company.logo_url && (
-                      <img src={company.logo_url} alt="" className="h-16 w-16 rounded-lg border border-white/15 bg-slate-950/70 object-contain p-2 shadow-sm" />
-                    )}
+                    <div className="grid h-20 w-20 shrink-0 place-items-center overflow-hidden rounded-lg border border-white/15 bg-slate-950/80 text-cyan-200 shadow-inner">
+                      {logoPreview || companyProfileForm.logo_url || company.logo_url ? (
+                        <img src={logoPreview || companyProfileForm.logo_url || company.logo_url} alt={`${company.name} logo`} className="h-full w-full object-contain p-2" />
+                      ) : (
+                        <span className="text-2xl font-black">{(company.name || 'TF').slice(0, 2).toUpperCase()}</span>
+                      )}
+                    </div>
                     <div>
                       <h3 className="text-3xl font-black text-white">{company.name}</h3>
                       <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-300">{company.description || 'Manage employee records, attendance, salary, and live location data from this workspace.'}</p>
@@ -527,14 +606,52 @@ export default function FounderAdminDashboard() {
                     </p>
                   )}
                 </div>
-                <div className="rounded-md border border-white/10 bg-slate-950/70 p-4 text-sm text-slate-300 shadow-inner">
-                  <p className="font-bold text-white">{company.email}</p>
-                  <p>{company.phone}</p>
-                  <p>{company.address}</p>
-                  <p className="mt-2 font-semibold text-white">
-                    {company.start_time || '--:--'} to {company.end_time || '--:--'}
-                  </p>
-                </div>
+                <form onSubmit={submitCompanyProfile} className="rounded-lg border border-white/10 bg-slate-950/65 p-4 shadow-inner">
+                  <div className="grid gap-4 sm:grid-cols-[92px_1fr]">
+                    <div className="grid h-20 w-20 place-items-center overflow-hidden rounded-lg border border-white/15 bg-slate-900 text-cyan-200">
+                      {logoPreview || companyProfileForm.logo_url ? (
+                        <img src={logoPreview || companyProfileForm.logo_url} alt="Company logo preview" className="h-full w-full object-contain p-2" />
+                      ) : (
+                        <FiImage className="text-2xl" />
+                      )}
+                    </div>
+                    <div className="flex flex-col justify-center gap-3">
+                      <label className="inline-flex w-fit cursor-pointer items-center gap-2 rounded-md bg-cyan-400 px-4 py-2.5 text-sm font-black text-slate-950 transition hover:bg-cyan-300">
+                        <FiUploadCloud />
+                        {uploadingLogo ? 'Uploading...' : 'Change logo'}
+                        <input type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml" onChange={handleCompanyLogoFile} className="sr-only" disabled={uploadingLogo || savingCompanyProfile} />
+                      </label>
+                      <p className="text-xs leading-5 text-slate-400">PNG, JPG, WEBP, or SVG up to 2MB. The logo is kept contained so it appears clearly.</p>
+                    </div>
+                  </div>
+                  <div className="mt-4 grid gap-3">
+                    <label className={labelClass}>
+                      Company name
+                      <input value={companyProfileForm.name} onChange={(event) => setCompanyProfileForm({ ...companyProfileForm, name: event.target.value })} className={fieldClass} required />
+                    </label>
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      <label className={labelClass}>
+                        Phone
+                        <input value={companyProfileForm.phone} onChange={(event) => setCompanyProfileForm({ ...companyProfileForm, phone: event.target.value })} className={fieldClass} required />
+                      </label>
+                      <label className={labelClass}>
+                        Logo URL
+                        <input value={companyProfileForm.logo_url} onChange={(event) => setCompanyProfileForm({ ...companyProfileForm, logo_url: event.target.value })} className={fieldClass} placeholder="Upload or paste logo URL" />
+                      </label>
+                    </div>
+                    <label className={labelClass}>
+                      Address
+                      <input value={companyProfileForm.address} onChange={(event) => setCompanyProfileForm({ ...companyProfileForm, address: event.target.value })} className={fieldClass} required />
+                    </label>
+                    <label className={labelClass}>
+                      Description
+                      <textarea value={companyProfileForm.description} onChange={(event) => setCompanyProfileForm({ ...companyProfileForm, description: event.target.value })} rows={3} className={fieldClass} placeholder="Company summary" />
+                    </label>
+                  </div>
+                  <button type="submit" disabled={uploadingLogo || savingCompanyProfile} className="tf-kinetic mt-4 inline-flex items-center gap-2 rounded-md px-5 py-3 font-bold text-white shadow-hyper disabled:cursor-not-allowed disabled:opacity-60">
+                    <FiSave /> {savingCompanyProfile ? 'Saving...' : 'Save profile'}
+                  </button>
+                </form>
               </div>
             </section>
           )}

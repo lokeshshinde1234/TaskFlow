@@ -64,6 +64,14 @@ class CompanyTimingUpdate(BaseModel):
         return value[:5]
 
 
+class CompanyProfileUpdate(BaseModel):
+    name: Optional[str] = Field(default=None, min_length=2, max_length=255)
+    address: Optional[str] = Field(default=None, min_length=3, max_length=500)
+    phone: Optional[str] = Field(default=None, min_length=5, max_length=40)
+    logo_url: Optional[str] = None
+    description: Optional[str] = None
+
+
 class CompanyResponse(BaseModel):
     id: int
     name: str

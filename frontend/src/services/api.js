@@ -60,6 +60,7 @@ export const authAPI = {
   me: () => api.get('/auth/me'),
   companyRegister: (companyData) => api.post('/company/register', companyData),
   companyMe: () => api.get('/company/me'),
+  updateCompanyProfile: (data) => api.put('/company/profile', data),
   employeeCompany: () => api.get('/company/employee'),
   updateCompanyLocation: (data) => api.put('/company/location', data),
   companyTiming: () => api.get('/company/timing'),
