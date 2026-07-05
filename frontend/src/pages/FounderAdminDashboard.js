@@ -467,7 +467,7 @@ export default function FounderAdminDashboard() {
               <button
                 key={id}
                 type="button"
-                onClick={() => (id === 'enterprise' ? navigate('/admin-dashboard/enterprise') : id === 'salary' ? navigate('/founder/salary') : setTab(id))}
+                onClick={() => setTab(id)}
                 className={`grid grid-cols-[38px_1fr] items-center gap-3 rounded-lg border px-3 py-3 text-left transition ${tab === id ? 'border-cyan-400/50 bg-cyan-400/12 text-white shadow-[0_18px_50px_rgba(34,211,238,0.12)]' : 'border-transparent text-slate-300 hover:border-white/10 hover:bg-white/[0.04]'}`}>
                 <span className={`grid h-9 w-9 place-items-center rounded-md ${tab === id ? 'bg-cyan-400 text-slate-950' : 'bg-white/5 text-cyan-300'}`}><Icon className="text-base" /></span>
                 <span>
@@ -496,7 +496,7 @@ export default function FounderAdminDashboard() {
 
               <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
                 {founderTabs.map(([id, label]) => (
-                  <button key={id} onClick={() => (id === 'enterprise' ? navigate('/admin-dashboard/enterprise') : id === 'salary' ? navigate('/founder/salary') : setTab(id))} className={`rounded-md border px-4 py-2.5 text-sm font-bold transition ${tab === id ? 'border-cyan-400/60 bg-cyan-400/12 text-cyan-200' : 'border-white/10 bg-white/[0.03] text-slate-300 hover:border-cyan-400/40 hover:text-cyan-200'}`}>
+                  <button key={id} onClick={() => setTab(id)} className={`rounded-md border px-4 py-2.5 text-sm font-bold transition ${tab === id ? 'border-cyan-400/60 bg-cyan-400/12 text-cyan-200' : 'border-white/10 bg-white/[0.03] text-slate-300 hover:border-cyan-400/40 hover:text-cyan-200'}`}>
                     {label}
                   </button>
                 ))}
@@ -876,19 +876,59 @@ export default function FounderAdminDashboard() {
           )}
 
           {tab === 'salary' && (
-            <form onSubmit={submitSalary} className={`${panelClass} max-w-3xl`}>
-              <h3 className="font-black text-white">Generate monthly salary record</h3>
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                <select value={salaryForm.employee_id} onChange={(event) => setSalaryForm({ ...salaryForm, employee_id: event.target.value })} className={fieldClass} required>
-                  <option value="">Select employee</option>
-                  {employees.map((employee) => <option value={employee.id} key={employee.id}>{employee.first_name} {employee.last_name}</option>)}
-                </select>
-                {['base_salary', 'bonus', 'deduction', 'month', 'year', 'status'].map((key) => (
-                  <input key={key} value={salaryForm[key]} onChange={(event) => setSalaryForm({ ...salaryForm, [key]: event.target.value })} placeholder={key.replaceAll('_', ' ')} type={key === 'status' ? 'text' : 'number'} className={fieldClass} required />
-                ))}
-              </div>
-              <button className="tf-kinetic mt-4 rounded-md px-5 py-3 font-bold text-white shadow-hyper">Save salary</button>
-            </form>
+            <div className="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
+              <section className="overflow-hidden rounded-lg border border-white/10 bg-[linear-gradient(135deg,rgba(8,47,73,0.86),rgba(15,23,42,0.94),rgba(88,28,135,0.42))] p-6 shadow-[0_28px_100px_rgba(0,0,0,0.32)]">
+                <p className="text-sm font-black uppercase tracking-[0.22em] text-cyan-300">Payroll overview</p>
+                <h3 className="mt-3 text-3xl font-black text-white">Salary command desk</h3>
+                <p className="mt-3 max-w-xl text-sm leading-6 text-slate-300">
+                  Generate monthly salary records with employee context, payroll totals, and active workforce signals in one workspace.
+                </p>
+                <div className="mt-6 grid gap-3 sm:grid-cols-3 xl:grid-cols-1">
+                  {[
+                    ['Employees', employees.length],
+                    ['Payroll total', formatInr(analytics?.payroll_total)],
+                    ['Active today', analytics?.active_today || 0],
+                  ].map(([label, value]) => (
+                    <div key={label} className="rounded-lg border border-white/10 bg-slate-950/55 p-4">
+                      <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">{label}</p>
+                      <p className="mt-3 text-2xl font-black text-white">{value}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              <form onSubmit={submitSalary} className={panelClass}>
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                    <p className="text-sm font-black uppercase tracking-[0.22em] text-cyan-300">New salary record</p>
+                    <h3 className="mt-2 text-2xl font-black text-white">Generate monthly salary</h3>
+                    <p className="mt-2 text-sm leading-6 text-slate-400">Select an employee and create a clean payroll entry for the selected month.</p>
+                  </div>
+                  <span className="rounded-md border border-white/10 bg-slate-950/70 px-3 py-2 text-xs font-bold text-slate-300">
+                    {salaryForm.month}/{salaryForm.year}
+                  </span>
+                </div>
+
+                <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                  <label className={labelClass}>
+                    Employee
+                    <select value={salaryForm.employee_id} onChange={(event) => setSalaryForm({ ...salaryForm, employee_id: event.target.value })} className={fieldClass} required>
+                      <option value="">Select employee</option>
+                      {employees.map((employee) => <option value={employee.id} key={employee.id}>{employee.first_name} {employee.last_name}</option>)}
+                    </select>
+                  </label>
+                  {['base_salary', 'bonus', 'deduction', 'month', 'year', 'status'].map((key) => (
+                    <label key={key} className={labelClass}>
+                      {key.replaceAll('_', ' ')}
+                      <input value={salaryForm[key]} onChange={(event) => setSalaryForm({ ...salaryForm, [key]: event.target.value })} placeholder={key.replaceAll('_', ' ')} type={key === 'status' ? 'text' : 'number'} className={fieldClass} required />
+                    </label>
+                  ))}
+                </div>
+                <button className="tf-kinetic mt-6 inline-flex items-center gap-2 rounded-md px-5 py-3 font-bold text-white shadow-hyper">
+                  <FiSave /> Save salary
+                </button>
+              </form>
+            </div>
           )}
 
           {tab === 'reports' && (
@@ -938,6 +978,57 @@ export default function FounderAdminDashboard() {
                 </table>
               </div>
             </section>
+          )}
+
+          {tab === 'enterprise' && (
+            <div className="grid gap-6">
+              <section className="overflow-hidden rounded-lg border border-white/10 bg-[linear-gradient(135deg,rgba(8,47,73,0.9),rgba(15,23,42,0.96),rgba(79,70,229,0.32))] p-6 shadow-[0_28px_100px_rgba(0,0,0,0.34)]">
+                <div className="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-end">
+                  <div>
+                    <p className="text-sm font-black uppercase tracking-[0.24em] text-cyan-300">Enterprise workspace</p>
+                    <h3 className="mt-3 text-3xl font-black text-white">Advanced company operations</h3>
+                    <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-300">
+                      A unified command area for organization design, attendance governance, payroll control, project delivery, and platform security.
+                    </p>
+                  </div>
+                  <button type="button" className="inline-flex items-center justify-center gap-2 rounded-md border border-white/10 bg-white px-4 py-3 text-sm font-black text-slate-950 transition hover:bg-cyan-100">
+                    <FiCrosshair /> Run anomaly scan
+                  </button>
+                </div>
+              </section>
+
+              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                {[
+                  ['Org design', 'Departments, teams, roles, and company hierarchy control.'],
+                  ['Attendance policy', 'Shift rules, leave workflows, approvals, and daily summaries.'],
+                  ['Payroll controls', 'Salary runs, payslips, deductions, bonuses, and audit checks.'],
+                  ['Project delivery', 'Projects, task ownership, priority queues, and completion tracking.'],
+                  ['Platform security', 'API keys, webhooks, access policy, and operational audit logs.'],
+                  ['Workflow data', 'Reports, exports, integrations, and company-wide data hygiene.'],
+                ].map(([title, text], index) => (
+                  <article key={title} className="rounded-lg border border-white/10 bg-slate-900/88 p-5 shadow-[0_20px_70px_rgba(0,0,0,0.22)]">
+                    <p className="text-xs font-black uppercase tracking-[0.2em] text-cyan-300">Module {String(index + 1).padStart(2, '0')}</p>
+                    <h4 className="mt-4 text-lg font-black text-white">{title}</h4>
+                    <p className="mt-3 text-sm leading-6 text-slate-400">{text}</p>
+                  </article>
+                ))}
+              </div>
+
+              <section className={panelClass}>
+                <div className="grid gap-4 md:grid-cols-3">
+                  {[
+                    ['Company', company?.name || 'Workspace'],
+                    ['Employees', employees.length],
+                    ['Open sessions', analytics?.open_attendance_sessions || 0],
+                  ].map(([label, value]) => (
+                    <div key={label} className="rounded-lg border border-white/10 bg-slate-950/55 p-4">
+                      <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">{label}</p>
+                      <p className="mt-3 text-2xl font-black text-white">{value}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            </div>
           )}
         </main>
       </div>
