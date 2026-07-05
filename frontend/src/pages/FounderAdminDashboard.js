@@ -137,6 +137,23 @@ const sectionClass = 'rounded-lg border border-white/10 bg-slate-900/88 shadow-[
 const fieldClass = 'mt-2 w-full rounded-md border border-slate-700 bg-slate-950/70 px-3 py-3 text-white placeholder:text-slate-500 outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20';
 const compactFieldClass = 'w-full rounded-md border border-slate-700 bg-slate-950/70 px-3 py-2 text-sm text-white placeholder:text-slate-500 outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20';
 const labelClass = 'text-sm font-semibold text-slate-300';
+const founderTabs = [
+  ['analytics', 'Command', 'Operational health and workforce signals', FiUsers],
+  ['employees', 'People', 'Create, search, edit, and audit employee records', FiUsers],
+  ['locations', 'Geo Ops', 'Working hours, geofence, and live map control', FiMapPin],
+  ['salary', 'Payroll', 'Generate monthly salary records', FiDollarSign],
+  ['reports', 'Reports', 'Export attendance and compliance history', FiDownload],
+  ['enterprise', 'Enterprise', 'Advanced modules and workflow controls', FiCrosshair],
+];
+
+const tabDetails = {
+  analytics: ['Command Center', 'Live business posture for your company workspace.'],
+  employees: ['People Operations', 'A clean control room for employee identity, roles, departments, and status.'],
+  locations: ['Geo Operations', 'Set company attendance timing and geofence behavior from one operational map.'],
+  salary: ['Payroll Studio', 'Generate payroll records against current employee data.'],
+  reports: ['Attendance Intelligence', 'Review and export attendance records with operational context.'],
+  enterprise: ['Enterprise Modules', 'Open the advanced administration console.'],
+};
 
 export default function FounderAdminDashboard() {
   const navigate = useNavigate();
@@ -422,54 +439,53 @@ export default function FounderAdminDashboard() {
     logout();
     navigate('/', { replace: true });
   };
+  const currentPage = tabDetails[tab] || tabDetails.analytics;
 
   return (
     <div className="dark">
-    <div className="relative min-h-screen overflow-hidden bg-slate-950 text-slate-100">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-96 bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.18),_transparent_30%)]" />
-      <div className="pointer-events-none absolute right-0 top-28 h-80 w-80 rounded-full bg-cyan-500/10 blur-3xl" />
-      <div className="pointer-events-none absolute left-0 top-40 h-80 w-80 rounded-full bg-violet-500/10 blur-3xl" />
+    <div className="relative min-h-screen overflow-hidden bg-[#040816] text-slate-100">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[34rem] bg-[radial-gradient(circle_at_18%_8%,rgba(34,211,238,0.22),transparent_28%),radial-gradient(circle_at_86%_4%,rgba(99,102,241,0.22),transparent_30%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:48px_48px] opacity-30" />
 
       <div className="relative lg:flex">
-        <aside className="fixed inset-y-0 left-0 z-40 hidden w-72 border-r border-slate-800/70 bg-slate-950/95 p-6 shadow-2xl shadow-slate-950/40 lg:block">
-          <div className="flex items-center gap-3">
-            <div className="rounded-3xl bg-cyan-500/15 p-3 text-cyan-300 shadow-xl shadow-cyan-500/10">
+        <aside className="fixed inset-y-0 left-0 z-40 hidden w-80 border-r border-white/10 bg-[#07111f]/95 p-5 shadow-2xl shadow-slate-950/40 backdrop-blur-xl lg:block">
+          <div className="rounded-lg border border-white/10 bg-white/[0.04] p-4">
+            <div className="flex items-center gap-3">
+            <div className="rounded-lg bg-cyan-400/15 p-3 text-cyan-300 shadow-xl shadow-cyan-500/10">
               <FiUsers className="h-6 w-6" />
             </div>
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">TaskFlow Admin</p>
-              <h1 className="text-2xl font-black text-white">Founder Admin</h1>
+              <p className="text-xs font-black uppercase tracking-[0.24em] text-cyan-300">TaskFlow Admin</p>
+              <h1 className="text-2xl font-black text-white">Founder Console</h1>
             </div>
+            </div>
+            <p className="mt-4 text-sm leading-6 text-slate-400">Company control plane for people, attendance, geofence, payroll, and reporting.</p>
           </div>
 
-          <nav className="mt-10 grid gap-3">
-            {[
-              ['analytics', 'Analytics', FiUsers],
-              ['employees', 'Employees', FiUsers],
-              ['locations', 'Live locations', FiMapPin],
-              ['salary', 'Salary', FiDollarSign],
-              ['reports', 'Reports', FiDownload],
-              ['enterprise', 'Enterprise', FiCrosshair],
-            ].map(([id, label, Icon]) => (
+          <nav className="mt-6 grid gap-2">
+            {founderTabs.map(([id, label, description, Icon]) => (
               <button
                 key={id}
                 type="button"
                 onClick={() => (id === 'enterprise' ? navigate('/admin-dashboard/enterprise') : id === 'salary' ? navigate('/founder/salary') : setTab(id))}
-                className={`flex items-center gap-3 rounded-3xl px-4 py-3 text-left text-sm font-semibold transition ${tab === id ? 'bg-cyan-500 text-slate-950 shadow-cyan-500/20' : 'text-slate-300 hover:bg-slate-900/80'}`}>
-                <Icon className="text-base" />
-                {label}
+                className={`grid grid-cols-[38px_1fr] items-center gap-3 rounded-lg border px-3 py-3 text-left transition ${tab === id ? 'border-cyan-400/50 bg-cyan-400/12 text-white shadow-[0_18px_50px_rgba(34,211,238,0.12)]' : 'border-transparent text-slate-300 hover:border-white/10 hover:bg-white/[0.04]'}`}>
+                <span className={`grid h-9 w-9 place-items-center rounded-md ${tab === id ? 'bg-cyan-400 text-slate-950' : 'bg-white/5 text-cyan-300'}`}><Icon className="text-base" /></span>
+                <span>
+                  <span className="block text-sm font-black">{label}</span>
+                  <span className="mt-0.5 block text-xs font-medium text-slate-500">{description}</span>
+                </span>
               </button>
             ))}
           </nav>
         </aside>
-        <div className="lg:pl-80">
-          <header className="sticky top-0 z-30 border-b border-slate-800/80 bg-slate-950/95 backdrop-blur-xl">
-            <div className="flex flex-col gap-4 px-4 py-6 sm:px-6 lg:px-8">
+        <div className="w-full lg:pl-80">
+          <header className="sticky top-0 z-30 border-b border-white/10 bg-[#07111f]/88 backdrop-blur-xl">
+            <div className="mx-auto flex max-w-[1500px] flex-col gap-4 px-4 py-5 sm:px-6 lg:px-8">
               <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 <div>
-                  <p className="text-sm font-semibold uppercase tracking-[0.3em] text-cyan-300">Founder admin dashboard</p>
-                  <h2 className="mt-3 text-3xl font-black text-white">{company?.name || 'Company workspace'}</h2>
-                  {company && <p className="mt-2 text-sm text-slate-400">{company.email} / {company.phone} / {company.address}</p>}
+                  <p className="text-sm font-black uppercase tracking-[0.3em] text-cyan-300">{currentPage[0]}</p>
+                  <h2 className="mt-2 text-3xl font-black text-white">{company?.name || 'Company workspace'}</h2>
+                  <p className="mt-2 max-w-3xl text-sm text-slate-400">{currentPage[1]}</p>
                 </div>
                 <div className="flex flex-wrap items-center gap-3">
                   <button type="button" onClick={handleLogout} className="inline-flex items-center gap-2 rounded-full bg-cyan-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400">
@@ -478,10 +494,10 @@ export default function FounderAdminDashboard() {
                 </div>
               </div>
 
-              <div className="hidden lg:grid grid-cols-6 gap-3">
-                {['analytics', 'employees', 'locations', 'salary', 'reports', 'enterprise'].map((id) => (
-                  <button key={id} onClick={() => (id === 'enterprise' ? navigate('/admin-dashboard/enterprise') : id === 'salary' ? navigate('/founder/salary') : setTab(id))} className={`rounded-3xl border px-4 py-3 text-sm font-semibold transition ${tab === id ? 'border-cyan-500 bg-cyan-500/10 text-cyan-300' : 'border-slate-800 bg-slate-900/80 text-slate-300 hover:border-cyan-500 hover:text-cyan-300'}`}>
-                    {id}
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
+                {founderTabs.map(([id, label]) => (
+                  <button key={id} onClick={() => (id === 'enterprise' ? navigate('/admin-dashboard/enterprise') : id === 'salary' ? navigate('/founder/salary') : setTab(id))} className={`rounded-md border px-4 py-2.5 text-sm font-bold transition ${tab === id ? 'border-cyan-400/60 bg-cyan-400/12 text-cyan-200' : 'border-white/10 bg-white/[0.03] text-slate-300 hover:border-cyan-400/40 hover:text-cyan-200'}`}>
+                    {label}
                   </button>
                 ))}
               </div>
