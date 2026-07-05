@@ -140,6 +140,126 @@ const formatInr = (value) => {
   return `Rs ${amount.toLocaleString('en-IN', { maximumFractionDigits: 2 })}`;
 };
 
+const employeeImportAliases = {
+  firstname: 'first_name',
+  first_name: 'first_name',
+  first: 'first_name',
+  lastname: 'last_name',
+  last_name: 'last_name',
+  last: 'last_name',
+  name: 'name',
+  fullname: 'name',
+  full_name: 'name',
+  email: 'email',
+  employeeid: 'employee_id',
+  employee_id: 'employee_id',
+  employee_code: 'employee_id',
+  empid: 'employee_id',
+  phone: 'phone',
+  mobile: 'phone',
+  department: 'department',
+  position: 'position',
+  role: 'position',
+  salary: 'salary',
+  dateofjoining: 'date_of_joining',
+  date_of_joining: 'date_of_joining',
+  joiningdate: 'date_of_joining',
+  join_date: 'date_of_joining',
+  profileimageurl: 'profile_image_url',
+  profile_image_url: 'profile_image_url',
+  image: 'profile_image_url',
+  status: 'is_active',
+  active: 'is_active',
+  is_active: 'is_active',
+};
+
+const normalizeImportKey = (key) => {
+  const compact = String(key || '').trim().toLowerCase().replace(/[^a-z0-9_]+/g, '_').replace(/^_+|_+$/g, '');
+  return employeeImportAliases[compact] || employeeImportAliases[compact.replaceAll('_', '')] || compact;
+};
+
+const parseCsvRows = (text) => {
+  const rows = [];
+  let row = [];
+  let value = '';
+  let quoted = false;
+
+  for (let index = 0; index < text.length; index += 1) {
+    const char = text[index];
+    const next = text[index + 1];
+    if (char === '"' && quoted && next === '"') {
+      value += '"';
+      index += 1;
+    } else if (char === '"') {
+      quoted = !quoted;
+    } else if (char === ',' && !quoted) {
+      row.push(value.trim());
+      value = '';
+    } else if ((char === '\n' || char === '\r') && !quoted) {
+      if (char === '\r' && next === '\n') index += 1;
+      row.push(value.trim());
+      if (row.some(Boolean)) rows.push(row);
+      row = [];
+      value = '';
+    } else {
+      value += char;
+    }
+  }
+
+  row.push(value.trim());
+  if (row.some(Boolean)) rows.push(row);
+  return rows;
+};
+
+const normalizeImportedEmployee = (record, rowNumber) => {
+  const normalized = {};
+  Object.entries(record || {}).forEach(([key, value]) => {
+    normalized[normalizeImportKey(key)] = typeof value === 'string' ? value.trim() : value;
+  });
+
+  if ((!normalized.first_name || !normalized.last_name) && normalized.name) {
+    const parts = String(normalized.name).trim().split(/\s+/);
+    normalized.first_name = normalized.first_name || parts.shift() || '';
+    normalized.last_name = normalized.last_name || parts.join(' ') || '-';
+  }
+
+  const status = String(normalized.is_active ?? 'active').trim().toLowerCase();
+  const isActive = !['inactive', 'false', '0', 'no', 'disabled'].includes(status);
+  const salary = normalized.salary === '' || normalized.salary == null ? '' : Number(normalized.salary);
+
+  return {
+    rowNumber,
+    first_name: normalized.first_name || '',
+    last_name: normalized.last_name || '',
+    email: normalized.email || '',
+    employee_id: normalized.employee_id || '',
+    phone: normalized.phone ? String(normalized.phone).replace(/\D/g, '').slice(0, 10) : '',
+    department: normalized.department || 'General',
+    position: normalized.position || 'Employee',
+    salary: Number.isFinite(salary) ? salary : '',
+    profile_image_url: normalized.profile_image_url || '',
+    date_of_joining: normalized.date_of_joining || '',
+    is_active: isActive,
+  };
+};
+
+const parseEmployeeImportText = (text, fileName) => {
+  const trimmed = text.trim();
+  const isJson = fileName.toLowerCase().endsWith('.json') || trimmed.startsWith('[') || trimmed.startsWith('{');
+  let records = [];
+
+  if (isJson) {
+    const parsed = JSON.parse(trimmed);
+    records = Array.isArray(parsed) ? parsed : parsed.employees || parsed.records || [];
+  } else {
+    const rows = parseCsvRows(text);
+    const headers = rows.shift()?.map(normalizeImportKey) || [];
+    records = rows.map((row) => headers.reduce((acc, header, index) => ({ ...acc, [header]: row[index] || '' }), {}));
+  }
+
+  return records.map((record, index) => normalizeImportedEmployee(record, index + 2));
+};
+
 const panelClass = 'rounded-lg border border-white/10 bg-slate-900/88 p-5 shadow-[0_24px_80px_rgba(0,0,0,0.28)] backdrop-blur-xl';
 const sectionClass = 'rounded-lg border border-white/10 bg-slate-900/88 shadow-[0_24px_80px_rgba(0,0,0,0.28)] backdrop-blur-xl';
 const fieldClass = 'mt-2 w-full rounded-md border border-slate-700 bg-slate-950/70 px-3 py-3 text-white placeholder:text-slate-500 outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20';
@@ -182,6 +302,10 @@ export default function FounderAdminDashboard() {
   const [logoPreview, setLogoPreview] = useState('');
   const [uploadingLogo, setUploadingLogo] = useState(false);
   const [savingCompanyProfile, setSavingCompanyProfile] = useState(false);
+  const [peopleImportFileName, setPeopleImportFileName] = useState('');
+  const [peopleImportRows, setPeopleImportRows] = useState([]);
+  const [peopleImportErrors, setPeopleImportErrors] = useState([]);
+  const [savingPeopleImport, setSavingPeopleImport] = useState(false);
   const [salaryForm, setSalaryForm] = useState({ employee_id: '', base_salary: '', bonus: 0, deduction: 0, month: new Date().getMonth() + 1, year: new Date().getFullYear(), status: 'pending' });
   const [message, setMessage] = useState('');
 
@@ -354,6 +478,96 @@ export default function FounderAdminDashboard() {
       const detail = err.response?.data?.detail;
       setMessage(typeof detail === 'string' ? detail : 'Unable to delete employee. Try again.');
     }
+  };
+
+  const handlePeopleImportFile = async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    setMessage('');
+    setPeopleImportErrors([]);
+    setPeopleImportRows([]);
+    setPeopleImportFileName(file.name);
+
+    if (!/\.(csv|json|txt)$/i.test(file.name)) {
+      setPeopleImportErrors(['Please select a CSV or JSON file with employee records.']);
+      event.target.value = '';
+      return;
+    }
+
+    try {
+      const text = await file.text();
+      const rows = parseEmployeeImportText(text, file.name);
+      const errors = [];
+      const seenEmails = new Set();
+      const existingEmails = new Set(employees.map((employee) => employee.email.toLowerCase()));
+
+      rows.forEach((row) => {
+        if (!row.first_name) errors.push(`Row ${row.rowNumber}: first name is required.`);
+        if (!row.last_name) errors.push(`Row ${row.rowNumber}: last name is required.`);
+        if (!row.email) errors.push(`Row ${row.rowNumber}: email is required.`);
+        const email = row.email.toLowerCase();
+        if (email && seenEmails.has(email)) errors.push(`Row ${row.rowNumber}: duplicate email in import file.`);
+        if (email && existingEmails.has(email)) errors.push(`Row ${row.rowNumber}: email already exists in this company.`);
+        if (row.phone && row.phone.length !== 10) errors.push(`Row ${row.rowNumber}: phone must be exactly 10 digits.`);
+        seenEmails.add(email);
+      });
+
+      setPeopleImportRows(rows);
+      setPeopleImportErrors(errors);
+      setMessage(rows.length ? `${rows.length} employee record${rows.length === 1 ? '' : 's'} ready to review.` : 'No employee records found in the file.');
+    } catch (err) {
+      setPeopleImportErrors(['Unable to read this file. Please check the CSV/JSON format.']);
+    } finally {
+      event.target.value = '';
+    }
+  };
+
+  const savePeopleImport = async () => {
+    if (!peopleImportRows.length || peopleImportErrors.length) return;
+    setSavingPeopleImport(true);
+    setMessage('');
+
+    const failed = [];
+    const failedRows = [];
+    let savedCount = 0;
+
+    for (const row of peopleImportRows) {
+      const payload = {
+        first_name: row.first_name,
+        last_name: row.last_name,
+        email: row.email,
+        employee_id: row.employee_id || undefined,
+        phone: row.phone || undefined,
+        department: row.department || 'General',
+        position: row.position || 'Employee',
+        salary: row.salary === '' ? null : Number(row.salary),
+        profile_image_url: row.profile_image_url || undefined,
+        date_of_joining: row.date_of_joining || undefined,
+        is_active: row.is_active,
+        company_id: company?.id ?? user?.company_id ?? undefined,
+      };
+
+      try {
+        await employeeAPI.createEmployee(payload);
+        savedCount += 1;
+      } catch (err) {
+        failed.push(`Row ${row.rowNumber}: ${handleError(err, 'Unable to save employee.')}`);
+        failedRows.push(row);
+      }
+    }
+
+    setSavingPeopleImport(false);
+    if (failed.length) {
+      setPeopleImportErrors(failed);
+      setPeopleImportRows(failedRows);
+      setMessage(`${savedCount} employee record${savedCount === 1 ? '' : 's'} saved. Fix the remaining records and try again.`);
+    } else {
+      setPeopleImportRows([]);
+      setPeopleImportFileName('');
+      setPeopleImportErrors([]);
+      setMessage(`${savedCount} employee record${savedCount === 1 ? '' : 's'} imported into ${company?.name || 'this company'}.`);
+    }
+    await loadData();
   };
 
   const submitSalary = async (event) => {
@@ -690,6 +904,96 @@ export default function FounderAdminDashboard() {
 
           {tab === 'employees' && (
             <div className="grid min-w-0 gap-6">
+              <section className={panelClass}>
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                  <div>
+                    <p className="text-sm font-black uppercase tracking-[0.22em] text-cyan-300">People import</p>
+                    <h3 className="mt-2 text-2xl font-black text-white">Add existing employee records from file</h3>
+                    <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">
+                      Choose a CSV or JSON file, review the records here, then save them into {company?.name || 'this company'}.
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-3">
+                    <label className="inline-flex cursor-pointer items-center gap-2 rounded-md border border-cyan-400/40 bg-cyan-400/12 px-4 py-3 text-sm font-black text-cyan-100 transition hover:bg-cyan-400/20">
+                      <FiUploadCloud />
+                      Import file
+                      <input type="file" accept=".csv,.json,.txt,text/csv,application/json" onChange={handlePeopleImportFile} className="sr-only" />
+                    </label>
+                    <button
+                      type="button"
+                      onClick={savePeopleImport}
+                      disabled={!peopleImportRows.length || peopleImportErrors.length > 0 || savingPeopleImport}
+                      className="tf-kinetic inline-flex items-center gap-2 rounded-md px-4 py-3 text-sm font-black text-white shadow-hyper disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      <FiSave /> {savingPeopleImport ? 'Saving...' : 'Save imported employees'}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="mt-5 grid gap-3 rounded-lg border border-white/10 bg-slate-950/55 p-4 text-sm text-slate-300 md:grid-cols-3">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Selected file</p>
+                    <p className="mt-2 font-semibold text-white">{peopleImportFileName || 'No file selected'}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Ready records</p>
+                    <p className="mt-2 font-semibold text-white">{peopleImportRows.length}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Required columns</p>
+                    <p className="mt-2 font-semibold text-white">First name, Last name, Email</p>
+                  </div>
+                </div>
+
+                {peopleImportErrors.length > 0 && (
+                  <div className="mt-4 rounded-lg border border-rose-400/25 bg-rose-500/10 p-4 text-sm text-rose-100">
+                    <p className="font-black">Fix these before saving:</p>
+                    <ul className="mt-2 grid gap-1">
+                      {peopleImportErrors.slice(0, 8).map((error) => <li key={error}>{error}</li>)}
+                    </ul>
+                    {peopleImportErrors.length > 8 && <p className="mt-2 text-rose-200">And {peopleImportErrors.length - 8} more issue(s).</p>}
+                  </div>
+                )}
+
+                {peopleImportRows.length > 0 && (
+                  <div className="mt-5 overflow-x-auto rounded-lg border border-white/10">
+                    <table className="min-w-[980px] w-full text-left text-sm">
+                      <thead className="bg-slate-950 text-slate-400">
+                        <tr>
+                          <th className="px-4 py-3">Name</th>
+                          <th className="px-4 py-3">Email</th>
+                          <th className="px-4 py-3">Employee ID</th>
+                          <th className="px-4 py-3">Phone</th>
+                          <th className="px-4 py-3">Department</th>
+                          <th className="px-4 py-3">Position</th>
+                          <th className="px-4 py-3">Salary</th>
+                          <th className="px-4 py-3">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {peopleImportRows.slice(0, 10).map((row) => (
+                          <tr key={`${row.rowNumber}-${row.email}`} className="border-t border-white/10 text-slate-200">
+                            <td className="px-4 py-3 font-semibold text-white">{row.first_name} {row.last_name}</td>
+                            <td className="px-4 py-3">{row.email}</td>
+                            <td className="px-4 py-3 font-mono text-cyan-300">{row.employee_id || 'Auto'}</td>
+                            <td className="px-4 py-3">{row.phone || '-'}</td>
+                            <td className="px-4 py-3">{row.department || '-'}</td>
+                            <td className="px-4 py-3">{row.position || '-'}</td>
+                            <td className="px-4 py-3">{formatInr(row.salary)}</td>
+                            <td className="px-4 py-3">{row.is_active ? 'Active' : 'Inactive'}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    {peopleImportRows.length > 10 && (
+                      <p className="border-t border-white/10 bg-slate-950/70 px-4 py-3 text-sm text-slate-400">
+                        Showing first 10 of {peopleImportRows.length} records. All valid records will be saved.
+                      </p>
+                    )}
+                  </div>
+                )}
+              </section>
+
               <form onSubmit={submitEmployee} className={panelClass}>
                 <h3 className="flex items-center gap-2 font-black text-white"><FiPlus /> {editingId ? 'Edit employee' : 'Add employee'}</h3>
                 <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
