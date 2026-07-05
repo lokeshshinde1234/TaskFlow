@@ -132,6 +132,12 @@ const formatInr = (value) => {
   return `Rs ${amount.toLocaleString('en-IN', { maximumFractionDigits: 2 })}`;
 };
 
+const panelClass = 'rounded-lg border border-white/10 bg-slate-900/88 p-5 shadow-[0_24px_80px_rgba(0,0,0,0.28)] backdrop-blur-xl';
+const sectionClass = 'rounded-lg border border-white/10 bg-slate-900/88 shadow-[0_24px_80px_rgba(0,0,0,0.28)] backdrop-blur-xl';
+const fieldClass = 'mt-2 w-full rounded-md border border-slate-700 bg-slate-950/70 px-3 py-3 text-white placeholder:text-slate-500 outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20';
+const compactFieldClass = 'w-full rounded-md border border-slate-700 bg-slate-950/70 px-3 py-2 text-sm text-white placeholder:text-slate-500 outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20';
+const labelClass = 'text-sm font-semibold text-slate-300';
+
 export default function FounderAdminDashboard() {
   const navigate = useNavigate();
   const { logout, user } = useContext(AuthContext);
@@ -482,21 +488,21 @@ export default function FounderAdminDashboard() {
             </div>
           </header>
 
-          <main className="grid gap-6 p-4 sm:p-6 lg:p-8">
-            {message && <div className="rounded-md border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-800 dark:border-blue-700 dark:bg-slate-800 dark:text-blue-200">{typeof message === 'string' ? message : JSON.stringify(message)}</div>}
+          <main className="mx-auto grid w-full max-w-[1500px] gap-6 p-4 sm:p-6 lg:p-8">
+            {message && <div className="rounded-md border border-cyan-400/25 bg-cyan-400/10 px-4 py-3 text-sm font-semibold text-cyan-100">{typeof message === 'string' ? message : JSON.stringify(message)}</div>}
 
           {company && (
-            <section className="rounded-lg border border-white/70 bg-white/85 p-5 shadow-hyper backdrop-blur dark:border-slate-700 dark:bg-slate-900/90">
-              <div className="grid gap-4 md:grid-cols-[1fr_auto] md:items-center">
+            <section className="overflow-hidden rounded-lg border border-white/10 bg-[linear-gradient(135deg,rgba(15,23,42,0.96),rgba(8,47,73,0.72),rgba(88,28,135,0.42))] p-6 shadow-[0_28px_100px_rgba(0,0,0,0.35)] backdrop-blur-xl">
+              <div className="grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
                 <div>
-                  <p className="text-sm font-semibold text-cyan-600 dark:text-cyan-300">Company workspace</p>
-                  <div className="flex flex-wrap items-center gap-4">
+                  <p className="text-sm font-black uppercase tracking-[0.22em] text-cyan-300">Company workspace</p>
+                  <div className="mt-4 flex flex-wrap items-center gap-4">
                     {company.logo_url && (
-                      <img src={company.logo_url} alt="" className="h-16 w-16 rounded-lg border border-cyan-100 bg-white object-contain p-2 shadow-sm dark:border-white/10 dark:bg-slate-950" />
+                      <img src={company.logo_url} alt="" className="h-16 w-16 rounded-lg border border-white/15 bg-slate-950/70 object-contain p-2 shadow-sm" />
                     )}
                     <div>
-                      <h3 className="mt-1 text-2xl font-black text-slate-950 dark:text-white">{company.name}</h3>
-                      <p className="mt-2 max-w-3xl text-sm text-slate-600 dark:text-slate-300">{company.description || 'Manage employee records, attendance, salary, and live location data from this workspace.'}</p>
+                      <h3 className="text-3xl font-black text-white">{company.name}</h3>
+                      <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-300">{company.description || 'Manage employee records, attendance, salary, and live location data from this workspace.'}</p>
                     </div>
                   </div>
                   {(!company.start_time || !company.end_time) && (
@@ -505,11 +511,11 @@ export default function FounderAdminDashboard() {
                     </p>
                   )}
                 </div>
-                <div className="rounded-md border border-slate-200 bg-white/70 p-4 text-sm text-slate-600 dark:border-slate-700 dark:bg-slate-950/60 dark:text-slate-300">
-                  <p className="font-bold text-slate-950 dark:text-white">{company.email}</p>
+                <div className="rounded-md border border-white/10 bg-slate-950/70 p-4 text-sm text-slate-300 shadow-inner">
+                  <p className="font-bold text-white">{company.email}</p>
                   <p>{company.phone}</p>
                   <p>{company.address}</p>
-                  <p className="mt-2 font-semibold text-slate-950 dark:text-white">
+                  <p className="mt-2 font-semibold text-white">
                     {company.start_time || '--:--'} to {company.end_time || '--:--'}
                   </p>
                 </div>
@@ -526,14 +532,14 @@ export default function FounderAdminDashboard() {
                   ['Open sessions', analytics?.open_attendance_sessions || 0],
                   ['Payroll total', formatInr(analytics?.payroll_total)],
                 ].map(([label, value]) => (
-                  <div key={label} className="rounded-lg border border-white/70 bg-white/85 p-5 shadow-hyper backdrop-blur dark:border-slate-700 dark:bg-slate-900/90">
-                    <p className="text-sm text-slate-500 dark:text-slate-400">{label}</p>
-                    <p className="mt-3 text-3xl font-black dark:text-white">{value}</p>
+                  <div key={label} className="rounded-lg border border-white/10 bg-slate-900/88 p-5 shadow-[0_20px_70px_rgba(0,0,0,0.22)] backdrop-blur-xl">
+                    <p className="text-sm font-semibold text-slate-400">{label}</p>
+                    <p className="mt-3 text-3xl font-black text-white">{value}</p>
                   </div>
                 ))}
               </div>
-              <section className="rounded-lg border border-white/70 bg-white/85 p-5 shadow-hyper backdrop-blur dark:border-slate-700 dark:bg-slate-900/90">
-                <h3 className="font-black dark:text-white">Department distribution</h3>
+              <section className={panelClass}>
+                <h3 className="font-black text-white">Department distribution</h3>
                 <div className="mt-5 h-72">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={chartData}>
@@ -551,93 +557,93 @@ export default function FounderAdminDashboard() {
 
           {tab === 'employees' && (
             <div className="grid min-w-0 gap-6">
-              <form onSubmit={submitEmployee} className="rounded-lg border border-white/70 bg-white/85 p-5 shadow-hyper backdrop-blur dark:border-slate-700 dark:bg-slate-900/90">
-                <h3 className="flex items-center gap-2 font-black dark:text-white"><FiPlus /> {editingId ? 'Edit employee' : 'Add employee'}</h3>
+              <form onSubmit={submitEmployee} className={panelClass}>
+                <h3 className="flex items-center gap-2 font-black text-white"><FiPlus /> {editingId ? 'Edit employee' : 'Add employee'}</h3>
                 <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                   <label className="block">
-                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">First name</span>
-                    <input value={employeeForm.first_name} onChange={(event) => setEmployeeForm({ ...employeeForm, first_name: event.target.value })} placeholder="First name" type="text" className="mt-2 w-full rounded-md border border-slate-300 bg-white px-3 py-3 text-slate-900 placeholder:text-slate-400 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500" required />
+                    <span className={labelClass}>First name</span>
+                    <input value={employeeForm.first_name} onChange={(event) => setEmployeeForm({ ...employeeForm, first_name: event.target.value })} placeholder="First name" type="text" className={fieldClass} required />
                   </label>
                   <label className="block">
-                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">Last name</span>
-                    <input value={employeeForm.last_name} onChange={(event) => setEmployeeForm({ ...employeeForm, last_name: event.target.value })} placeholder="Last name" type="text" className="mt-2 w-full rounded-md border border-slate-300 bg-white px-3 py-3 text-slate-900 placeholder:text-slate-400 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500" required />
+                    <span className={labelClass}>Last name</span>
+                    <input value={employeeForm.last_name} onChange={(event) => setEmployeeForm({ ...employeeForm, last_name: event.target.value })} placeholder="Last name" type="text" className={fieldClass} required />
                   </label>
                   <label className="block lg:col-span-2">
-                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">Email</span>
-                    <input value={employeeForm.email} onChange={(event) => setEmployeeForm({ ...employeeForm, email: event.target.value })} placeholder="Email" type="email" className="mt-2 w-full rounded-md border border-slate-300 bg-white px-3 py-3 text-slate-900 placeholder:text-slate-400 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500" required />
+                    <span className={labelClass}>Email</span>
+                    <input value={employeeForm.email} onChange={(event) => setEmployeeForm({ ...employeeForm, email: event.target.value })} placeholder="Email" type="email" className={fieldClass} required />
                   </label>
                   <label className="block">
-                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">Employee ID</span>
-                    <input value={employeeForm.employee_id} onChange={(event) => setEmployeeForm({ ...employeeForm, employee_id: event.target.value })} placeholder="Auto-generated if left blank" type="text" className="mt-2 w-full rounded-md border border-slate-300 bg-white px-3 py-3 text-slate-900 placeholder:text-slate-400 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500" />
+                    <span className={labelClass}>Employee ID</span>
+                    <input value={employeeForm.employee_id} onChange={(event) => setEmployeeForm({ ...employeeForm, employee_id: event.target.value })} placeholder="Auto-generated if left blank" type="text" className={fieldClass} />
                   </label>
                   <label className="block">
-                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">Phone</span>
-                    <input value={employeeForm.phone} onChange={(event) => setEmployeeForm({ ...employeeForm, phone: event.target.value.replace(/\D/g, '').slice(0, 10) })} placeholder="Phone" type="text" inputMode="numeric" maxLength={10} pattern="[0-9]{10}" className="mt-2 w-full rounded-md border border-slate-300 bg-white px-3 py-3 text-slate-900 placeholder:text-slate-400 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500" />
+                    <span className={labelClass}>Phone</span>
+                    <input value={employeeForm.phone} onChange={(event) => setEmployeeForm({ ...employeeForm, phone: event.target.value.replace(/\D/g, '').slice(0, 10) })} placeholder="Phone" type="text" inputMode="numeric" maxLength={10} pattern="[0-9]{10}" className={fieldClass} />
                   </label>
                   <label className="block">
-                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">Department</span>
-                    <input value={employeeForm.department} onChange={(event) => setEmployeeForm({ ...employeeForm, department: event.target.value })} placeholder="Department" type="text" className="mt-2 w-full rounded-md border border-slate-300 bg-white px-3 py-3 text-slate-900 placeholder:text-slate-400 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500" />
+                    <span className={labelClass}>Department</span>
+                    <input value={employeeForm.department} onChange={(event) => setEmployeeForm({ ...employeeForm, department: event.target.value })} placeholder="Department" type="text" className={fieldClass} />
                   </label>
                   <label className="block">
-                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">Position</span>
-                    <input value={employeeForm.position} onChange={(event) => setEmployeeForm({ ...employeeForm, position: event.target.value })} placeholder="Position" type="text" className="mt-2 w-full rounded-md border border-slate-300 bg-white px-3 py-3 text-slate-900 placeholder:text-slate-400 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500" />
+                    <span className={labelClass}>Position</span>
+                    <input value={employeeForm.position} onChange={(event) => setEmployeeForm({ ...employeeForm, position: event.target.value })} placeholder="Position" type="text" className={fieldClass} />
                   </label>
                   <label className="block">
-                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">Salary</span>
-                    <input value={employeeForm.salary} onChange={(event) => setEmployeeForm({ ...employeeForm, salary: event.target.value })} placeholder="Salary" type="number" min="0" className="mt-2 w-full rounded-md border border-slate-300 bg-white px-3 py-3 text-slate-900 placeholder:text-slate-400 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500" />
+                    <span className={labelClass}>Salary</span>
+                    <input value={employeeForm.salary} onChange={(event) => setEmployeeForm({ ...employeeForm, salary: event.target.value })} placeholder="Salary" type="number" min="0" className={fieldClass} />
                   </label>
                   <label className="block">
-                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">Join date</span>
-                    <input value={employeeForm.date_of_joining} onChange={(event) => setEmployeeForm({ ...employeeForm, date_of_joining: event.target.value })} placeholder="Date of joining" type="date" className="mt-2 w-full rounded-md border border-slate-300 bg-white px-3 py-3 text-slate-900 placeholder:text-slate-400 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500" />
+                    <span className={labelClass}>Join date</span>
+                    <input value={employeeForm.date_of_joining} onChange={(event) => setEmployeeForm({ ...employeeForm, date_of_joining: event.target.value })} placeholder="Date of joining" type="date" className={`${fieldClass} [color-scheme:dark]`} />
                   </label>
                   <label className="block">
-                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">Status</span>
-                    <select value={employeeForm.is_active ? 'active' : 'inactive'} onChange={(event) => setEmployeeForm({ ...employeeForm, is_active: event.target.value === 'active' })} className="mt-2 w-full rounded-md border border-slate-300 bg-white px-3 py-3 text-slate-900 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white">
+                    <span className={labelClass}>Status</span>
+                    <select value={employeeForm.is_active ? 'active' : 'inactive'} onChange={(event) => setEmployeeForm({ ...employeeForm, is_active: event.target.value === 'active' })} className={fieldClass}>
                       <option value="active">Active</option>
                       <option value="inactive">Inactive</option>
                     </select>
                   </label>
                   <label className="block lg:col-span-2">
-                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">Profile image URL</span>
-                    <input value={employeeForm.profile_image_url} onChange={(event) => setEmployeeForm({ ...employeeForm, profile_image_url: event.target.value })} placeholder="Profile image URL" type="url" className="mt-2 w-full rounded-md border border-slate-300 bg-white px-3 py-3 text-slate-900 placeholder:text-slate-400 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500" />
+                    <span className={labelClass}>Profile image URL</span>
+                    <input value={employeeForm.profile_image_url} onChange={(event) => setEmployeeForm({ ...employeeForm, profile_image_url: event.target.value })} placeholder="Profile image URL" type="url" className={fieldClass} />
                   </label>
                 </div>
                 <button className="tf-kinetic mt-4 w-full rounded-md px-4 py-3 font-bold text-white shadow-hyper">{editingId ? 'Update employee' : 'Add employee'}</button>
               </form>
 
-              <section className="rounded-lg border border-white/70 bg-white/85 shadow-hyper backdrop-blur dark:border-slate-700 dark:bg-slate-900/90">
-                <div className="grid gap-3 border-b border-slate-200 p-5 md:grid-cols-[1fr_220px] dark:border-slate-800">
-                  <label className="flex items-center gap-3 rounded-md border border-slate-300 px-3 py-2 dark:border-slate-700">
-                    <FiSearch className="text-slate-400 dark:text-slate-400" />
-                    <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search employees" className="w-full bg-white text-slate-900 placeholder:text-slate-400 outline-none dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500" />
+              <section className={sectionClass}>
+                <div className="grid gap-3 border-b border-white/10 p-5 md:grid-cols-[1fr_220px]">
+                  <label className="flex items-center gap-3 rounded-md border border-slate-700 bg-slate-950/70 px-3 py-2">
+                    <FiSearch className="text-slate-400" />
+                    <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search employees" className="w-full bg-transparent text-white placeholder:text-slate-500 outline-none" />
                   </label>
-                  <select value={department} onChange={(event) => setDepartment(event.target.value)} className="rounded-md border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white">
+                  <select value={department} onChange={(event) => setDepartment(event.target.value)} className={compactFieldClass}>
                     <option value="">All departments</option>
                     {departments.map((item) => <option key={item}>{item}</option>)}
                   </select>
                 </div>
                 {selectedEmployee && (
-                  <div className="border-b border-slate-200 p-5 dark:border-slate-800">
-                    <p className="mb-3 text-xs font-semibold uppercase text-slate-600 dark:text-slate-400">Selected employee</p>
-                    <div className="grid gap-4 rounded-lg bg-slate-50 p-4 dark:bg-slate-950 md:grid-cols-2 lg:grid-cols-4">
+                  <div className="border-b border-white/10 p-5">
+                    <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Selected employee</p>
+                    <div className="grid gap-4 rounded-lg border border-white/10 bg-slate-950/70 p-4 md:grid-cols-2 lg:grid-cols-4">
                       <div>
-                        <p className="text-xs text-slate-600 dark:text-slate-400">Name</p>
-                        <p className="mt-1 font-semibold text-slate-900 dark:text-white">{selectedEmployee.first_name} {selectedEmployee.last_name}</p>
+                        <p className="text-xs text-slate-400">Name</p>
+                        <p className="mt-1 font-semibold text-white">{selectedEmployee.first_name} {selectedEmployee.last_name}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-slate-600 dark:text-slate-400">Email</p>
-                        <p className="mt-1 text-sm text-slate-900 dark:text-white">{selectedEmployee.email}</p>
+                        <p className="text-xs text-slate-400">Email</p>
+                        <p className="mt-1 text-sm text-white">{selectedEmployee.email}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-slate-600 dark:text-slate-400">Employee ID</p>
-                        <p className="mt-1 font-mono text-sm font-semibold text-cyan-600 dark:text-cyan-300">{selectedEmployee.employee_id || '-'}</p>
+                        <p className="text-xs text-slate-400">Employee ID</p>
+                        <p className="mt-1 font-mono text-sm font-semibold text-cyan-300">{selectedEmployee.employee_id || '-'}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-slate-600 dark:text-slate-400">Department</p>
-                        <p className="mt-1 font-semibold text-slate-900 dark:text-white">{selectedEmployee.department || '-'}</p>
+                        <p className="text-xs text-slate-400">Department</p>
+                        <p className="mt-1 font-semibold text-white">{selectedEmployee.department || '-'}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-slate-600 dark:text-slate-400">Status</p>
+                        <p className="text-xs text-slate-400">Status</p>
                         <span className={`mt-1 inline-block rounded-full px-2 py-1 text-xs font-semibold ${workStatusClass(selectedEmployee)}`}>
                           {workStatusLabel(selectedEmployee)}
                         </span>
@@ -647,22 +653,22 @@ export default function FounderAdminDashboard() {
                 )}
                 <div className="space-y-4 p-5 md:hidden">
                   {employees.map((employee) => (
-                    <div key={employee.id} onClick={() => navigate(`/admin-dashboard/employees/${employee.id}/attendance`)} className="cursor-pointer rounded-3xl border border-slate-200 bg-slate-50 p-4 text-slate-900 shadow-sm transition hover:border-cyan-300 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:hover:border-cyan-500/50">
+                    <div key={employee.id} onClick={() => navigate(`/admin-dashboard/employees/${employee.id}/attendance`)} className="cursor-pointer rounded-lg border border-white/10 bg-slate-950/70 p-4 text-slate-100 shadow-sm transition hover:border-cyan-500/50">
                       <div className="flex items-start justify-between gap-3">
                         <div>
                           <p className="font-semibold">{employee.first_name} {employee.last_name}</p>
-                          <p className="text-sm text-slate-500 dark:text-slate-400">{employee.email}</p>
+                          <p className="text-sm text-slate-400">{employee.email}</p>
                         </div>
                         <span className={`rounded-full px-2 py-1 text-xs font-semibold ${workStatusClass(employee)}`}>
                           {workStatusLabel(employee)}
                         </span>
                       </div>
-                      <div className="mt-3 grid gap-2 text-sm text-slate-600 dark:text-slate-400">
-                        <p><span className="font-semibold text-slate-900 dark:text-slate-200">Employee ID:</span> <span className="font-mono text-cyan-600 dark:text-cyan-300">{employee.employee_id || '-'}</span></p>
-                        <p><span className="font-semibold text-slate-900 dark:text-slate-200">Department:</span> {employee.department || '-'}</p>
-                        <p><span className="font-semibold text-slate-900 dark:text-slate-200">Role:</span> {employee.position || '-'}</p>
-                        <p><span className="font-semibold text-slate-900 dark:text-slate-200">Joined:</span> {employee.date_of_joining ? new Date(employee.date_of_joining).toLocaleDateString() : '-'}</p>
-                        <p><span className="font-semibold text-slate-900 dark:text-slate-200">Salary:</span> {formatInr(employee.salary)}</p>
+                      <div className="mt-3 grid gap-2 text-sm text-slate-400">
+                        <p><span className="font-semibold text-slate-200">Employee ID:</span> <span className="font-mono text-cyan-300">{employee.employee_id || '-'}</span></p>
+                        <p><span className="font-semibold text-slate-200">Department:</span> {employee.department || '-'}</p>
+                        <p><span className="font-semibold text-slate-200">Role:</span> {employee.position || '-'}</p>
+                        <p><span className="font-semibold text-slate-200">Joined:</span> {employee.date_of_joining ? new Date(employee.date_of_joining).toLocaleDateString() : '-'}</p>
+                        <p><span className="font-semibold text-slate-200">Salary:</span> {formatInr(employee.salary)}</p>
                       </div>
                       <div className="mt-4 flex flex-col gap-2 sm:flex-row">
                         <button
@@ -691,29 +697,29 @@ export default function FounderAdminDashboard() {
                 </div>
                 <div className="hidden w-full overflow-x-auto md:block">
                   <table className="w-full text-left text-sm">
-                    <thead className="sticky top-0 bg-slate-50 text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                    <thead className="sticky top-0 bg-slate-800 text-slate-300">
                       <tr>
-                        <th className="px-6 py-4 font-semibold text-slate-900 dark:text-slate-300">Name</th>
-                        <th className="px-6 py-4 font-semibold text-slate-900 dark:text-slate-300">Email</th>
-                        <th className="px-6 py-4 font-semibold text-slate-900 dark:text-slate-300">Employee ID</th>
-                        <th className="px-6 py-4 font-semibold text-slate-900 dark:text-slate-300">Department</th>
-                        <th className="px-6 py-4 font-semibold text-slate-900 dark:text-slate-300">Position</th>
-                        <th className="px-6 py-4 font-semibold text-slate-900 dark:text-slate-300">Join date</th>
-                        <th className="px-6 py-4 font-semibold text-slate-900 dark:text-slate-300">Salary</th>
-                        <th className="px-6 py-4 font-semibold text-slate-900 dark:text-slate-300">Status</th>
-                        <th className="px-6 py-4 font-semibold text-slate-900 dark:text-slate-300">Actions</th>
+                        <th className="px-6 py-4 font-semibold text-slate-300">Name</th>
+                        <th className="px-6 py-4 font-semibold text-slate-300">Email</th>
+                        <th className="px-6 py-4 font-semibold text-slate-300">Employee ID</th>
+                        <th className="px-6 py-4 font-semibold text-slate-300">Department</th>
+                        <th className="px-6 py-4 font-semibold text-slate-300">Position</th>
+                        <th className="px-6 py-4 font-semibold text-slate-300">Join date</th>
+                        <th className="px-6 py-4 font-semibold text-slate-300">Salary</th>
+                        <th className="px-6 py-4 font-semibold text-slate-300">Status</th>
+                        <th className="px-6 py-4 font-semibold text-slate-300">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
                       {employees.map((employee) => (
-                        <tr key={employee.id} onClick={() => navigate(`/admin-dashboard/employees/${employee.id}/attendance`)} className="cursor-pointer border-t border-slate-100 transition hover:bg-slate-50 dark:border-slate-800 dark:text-slate-200 dark:hover:bg-slate-800">
-                          <td className="px-6 py-4 font-semibold text-slate-900 dark:text-white">{employee.first_name} {employee.last_name}</td>
-                          <td className="px-6 py-4 text-slate-700 dark:text-slate-300">{employee.email}</td>
-                          <td className="px-6 py-4 font-mono text-sm font-semibold text-cyan-600 dark:text-cyan-300">{employee.employee_id || '-'}</td>
-                          <td className="px-6 py-4 text-slate-700 dark:text-slate-300">{employee.department || '-'}</td>
-                          <td className="px-6 py-4 text-slate-700 dark:text-slate-300">{employee.position || '-'}</td>
-                          <td className="px-6 py-4 text-slate-700 dark:text-slate-300">{employee.date_of_joining ? new Date(employee.date_of_joining).toLocaleDateString() : '-'}</td>
-                          <td className="px-6 py-4 font-semibold text-slate-900 dark:text-white">{formatInr(employee.salary)}</td>
+                        <tr key={employee.id} onClick={() => navigate(`/admin-dashboard/employees/${employee.id}/attendance`)} className="cursor-pointer border-t border-slate-800 text-slate-200 transition hover:bg-slate-800/70">
+                          <td className="px-6 py-4 font-semibold text-white">{employee.first_name} {employee.last_name}</td>
+                          <td className="px-6 py-4 text-slate-300">{employee.email}</td>
+                          <td className="px-6 py-4 font-mono text-sm font-semibold text-cyan-300">{employee.employee_id || '-'}</td>
+                          <td className="px-6 py-4 text-slate-300">{employee.department || '-'}</td>
+                          <td className="px-6 py-4 text-slate-300">{employee.position || '-'}</td>
+                          <td className="px-6 py-4 text-slate-300">{employee.date_of_joining ? new Date(employee.date_of_joining).toLocaleDateString() : '-'}</td>
+                          <td className="px-6 py-4 font-semibold text-white">{formatInr(employee.salary)}</td>
                           <td className="px-6 py-4"><span className={`inline-block rounded-full px-2 py-1 text-xs font-semibold ${workStatusClass(employee)}`}>{workStatusLabel(employee)}</span></td>
                           <td className="flex gap-2 px-6 py-4">
                             <button
@@ -747,25 +753,25 @@ export default function FounderAdminDashboard() {
           )}
 
           {tab === 'locations' && (
-            <section className="rounded-lg border border-white/70 bg-white/85 p-5 shadow-hyper backdrop-blur dark:border-slate-700 dark:bg-slate-900/90">
-              <form onSubmit={submitCompanyTiming} className="mb-5 grid gap-3 rounded-lg border border-cyan-100 bg-cyan-50 p-4 dark:border-cyan-400/20 dark:bg-cyan-400/10 sm:grid-cols-[1fr_1fr_auto]">
+            <section className={panelClass}>
+              <form onSubmit={submitCompanyTiming} className="mb-5 grid gap-3 rounded-lg border border-cyan-400/20 bg-cyan-400/10 p-4 sm:grid-cols-[1fr_1fr_auto]">
                 <label className="block">
-                  <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">Company Starting Time</span>
+                  <span className="text-xs font-semibold text-slate-300">Company Starting Time</span>
                   <input
                     type="time"
                     value={companyTimingForm.start_time}
                     onChange={(event) => setCompanyTimingForm({ ...companyTimingForm, start_time: event.target.value })}
-                    className="mt-1 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                    className={`${compactFieldClass} mt-1 [color-scheme:dark]`}
                     required
                   />
                 </label>
                 <label className="block">
-                  <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">Company Ending Time</span>
+                  <span className="text-xs font-semibold text-slate-300">Company Ending Time</span>
                   <input
                     type="time"
                     value={companyTimingForm.end_time}
                     onChange={(event) => setCompanyTimingForm({ ...companyTimingForm, end_time: event.target.value })}
-                    className="mt-1 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                    className={`${compactFieldClass} mt-1 [color-scheme:dark]`}
                     required
                   />
                 </label>
@@ -775,12 +781,12 @@ export default function FounderAdminDashboard() {
               </form>
               <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                 <div>
-                  <h3 className="font-black dark:text-white">Employee live locations</h3>
-                  <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">Select the company check-in location used for employee in/out tracking.</p>
+                  <h3 className="font-black text-white">Employee live locations</h3>
+                  <p className="mt-1 text-sm text-slate-300">Select the company check-in location used for employee in/out tracking.</p>
                 </div>
                 <form onSubmit={submitCompanyLocation} className="grid w-full gap-3 lg:max-w-xl lg:grid-cols-[1fr_1fr_150px_auto]">
                   <label className="block">
-                    <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">Latitude</span>
+                    <span className="text-xs font-semibold text-slate-300">Latitude</span>
                     <input
                       value={companyLocationForm.latitude}
                       onChange={(event) => setCompanyLocationForm({ ...companyLocationForm, latitude: event.target.value })}
@@ -789,12 +795,12 @@ export default function FounderAdminDashboard() {
                       step="any"
                       min="-90"
                       max="90"
-                      className="mt-1 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                      className={`${compactFieldClass} mt-1`}
                       required
                     />
                   </label>
                   <label className="block">
-                    <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">Longitude</span>
+                    <span className="text-xs font-semibold text-slate-300">Longitude</span>
                     <input
                       value={companyLocationForm.longitude}
                       onChange={(event) => setCompanyLocationForm({ ...companyLocationForm, longitude: event.target.value })}
@@ -803,19 +809,19 @@ export default function FounderAdminDashboard() {
                       step="any"
                       min="-180"
                       max="180"
-                      className="mt-1 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                      className={`${compactFieldClass} mt-1`}
                       required
                     />
                   </label>
                   <label className="block">
-                    <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">Radius</span>
+                    <span className="text-xs font-semibold text-slate-300">Radius</span>
                     <input
                       value={companyLocationForm.geo_radius_meters}
                       onChange={(event) => setCompanyLocationForm({ ...companyLocationForm, geo_radius_meters: event.target.value })}
                       type="number"
                       min="25"
                       max="5000"
-                      className="mt-1 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                      className={`${compactFieldClass} mt-1`}
                       required
                     />
                   </label>
@@ -824,7 +830,7 @@ export default function FounderAdminDashboard() {
                   </button>
                 </form>
               </div>
-              <div className="mt-5 h-[560px] min-h-[360px] overflow-hidden rounded-lg border border-slate-200 bg-slate-100 dark:border-slate-800 dark:bg-slate-950">
+              <div className="mt-5 h-[560px] min-h-[360px] overflow-hidden rounded-lg border border-white/10 bg-slate-950 shadow-inner">
                 <MapContainer
                   center={locationMapCenter}
                   zoom={selectedCompanyPosition ? 15 : 4}
@@ -846,23 +852,23 @@ export default function FounderAdminDashboard() {
                   ))}
                 </MapContainer>
               </div>
-              <div className="mt-4 flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
-                <FiCrosshair className="text-cyan-600 dark:text-cyan-300" />
+              <div className="mt-4 flex items-center gap-2 text-sm text-slate-300">
+                <FiCrosshair className="text-cyan-300" />
                 <span>Click the map or type coordinates, then save to set the attendance tracking location.</span>
               </div>
             </section>
           )}
 
           {tab === 'salary' && (
-            <form onSubmit={submitSalary} className="max-w-3xl rounded-lg border border-white/70 bg-white/85 p-5 shadow-hyper backdrop-blur dark:border-slate-700 dark:bg-slate-900/90 dark:text-slate-200">
-              <h3 className="font-black dark:text-white">Generate monthly salary record</h3>
+            <form onSubmit={submitSalary} className={`${panelClass} max-w-3xl`}>
+              <h3 className="font-black text-white">Generate monthly salary record</h3>
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                <select value={salaryForm.employee_id} onChange={(event) => setSalaryForm({ ...salaryForm, employee_id: event.target.value })} className="rounded-md border border-slate-300 bg-white px-3 py-3 text-slate-900 placeholder:text-slate-400 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500" required>
+                <select value={salaryForm.employee_id} onChange={(event) => setSalaryForm({ ...salaryForm, employee_id: event.target.value })} className={fieldClass} required>
                   <option value="">Select employee</option>
                   {employees.map((employee) => <option value={employee.id} key={employee.id}>{employee.first_name} {employee.last_name}</option>)}
                 </select>
                 {['base_salary', 'bonus', 'deduction', 'month', 'year', 'status'].map((key) => (
-                  <input key={key} value={salaryForm[key]} onChange={(event) => setSalaryForm({ ...salaryForm, [key]: event.target.value })} placeholder={key.replaceAll('_', ' ')} type={key === 'status' ? 'text' : 'number'} className="rounded-md border border-slate-300 bg-white px-3 py-3 text-slate-900 placeholder:text-slate-400 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500" required />
+                  <input key={key} value={salaryForm[key]} onChange={(event) => setSalaryForm({ ...salaryForm, [key]: event.target.value })} placeholder={key.replaceAll('_', ' ')} type={key === 'status' ? 'text' : 'number'} className={fieldClass} required />
                 ))}
               </div>
               <button className="tf-kinetic mt-4 rounded-md px-5 py-3 font-bold text-white shadow-hyper">Save salary</button>
@@ -870,9 +876,9 @@ export default function FounderAdminDashboard() {
           )}
 
           {tab === 'reports' && (
-            <section className="rounded-lg border border-white/70 bg-white/85 p-5 shadow-hyper backdrop-blur dark:border-slate-700 dark:bg-slate-900/90">
+            <section className={panelClass}>
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <h3 className="font-black dark:text-white">Attendance reports</h3>
+                <h3 className="font-black text-white">Attendance reports</h3>
                 <button onClick={exportAttendanceCsv} className="tf-kinetic inline-flex items-center gap-2 rounded-md px-4 py-2 font-bold text-white shadow-hyper"><FiDownload /> Export CSV</button>
               </div>
               <div className="mt-5 overflow-x-auto min-w-0">
