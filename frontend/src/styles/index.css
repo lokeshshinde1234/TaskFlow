@@ -8,15 +8,15 @@
 
 html {
   min-height: 100%;
-  background: #eef7f5;
+  background: #020617;
   scroll-behavior: smooth;
 }
 
 body {
   min-height: 100%;
   margin: 0;
-  background: #eef7f5;
-  color: #102033;
+  background: #020617;
+  color: #e2e8f0;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -24,7 +24,7 @@ body {
 
 #root {
   min-height: 100vh;
-  background: #eef7f5;
+  background: #020617;
 }
 
 .dark,
@@ -135,29 +135,29 @@ body {
 }
 
 .tf-mesh-page {
-  background-color: #eef7f5;
+  background-color: #07111f;
   background:
     url("../assets/taskflow-transparent-bg.svg") center top / min(1500px, 120vw) auto no-repeat,
-    radial-gradient(circle at 10% 10%, rgba(20, 184, 166, 0.22), transparent 30%),
-    radial-gradient(circle at 86% 8%, rgba(244, 114, 182, 0.16), transparent 28%),
-    radial-gradient(circle at 50% 42%, rgba(59, 130, 246, 0.13), transparent 34%),
-    linear-gradient(180deg, #f8fbff 0%, #eef7f5 48%, #fff7ed 100%);
+    radial-gradient(circle at 16% 10%, rgba(45, 212, 191, 0.17), transparent 30%),
+    radial-gradient(circle at 82% 12%, rgba(244, 114, 182, 0.12), transparent 28%),
+    radial-gradient(circle at 42% 44%, rgba(37, 99, 235, 0.16), transparent 32%),
+    linear-gradient(180deg, #07111f 0%, #111827 58%, #1f2937 100%);
 }
 
 .tf-public-page {
-  background-color: #eef7f5;
+  background-color: #07111f;
   background:
     url("../assets/taskflow-transparent-bg.svg") center top / min(1500px, 120vw) auto no-repeat,
-    radial-gradient(circle at 12% 8%, rgba(20, 184, 166, 0.18), transparent 28%),
-    radial-gradient(circle at 88% 10%, rgba(244, 114, 182, 0.11), transparent 26%),
-    radial-gradient(circle at 48% 38%, rgba(59, 130, 246, 0.13), transparent 34%),
-    linear-gradient(180deg, #f8fbff 0%, #eef7f5 48%, #fff7ed 100%);
+    radial-gradient(circle at 16% 10%, rgba(45, 212, 191, 0.17), transparent 30%),
+    radial-gradient(circle at 82% 12%, rgba(244, 114, 182, 0.12), transparent 28%),
+    radial-gradient(circle at 42% 44%, rgba(37, 99, 235, 0.16), transparent 32%),
+    linear-gradient(180deg, #07111f 0%, #111827 58%, #1f2937 100%);
 }
 
 .tf-public-surface {
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  background: rgba(255, 255, 255, 0.85);
-  box-shadow: 0 24px 70px rgba(21, 49, 88, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(18px);
 }
 
