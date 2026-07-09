@@ -7,21 +7,34 @@
 }
 
 html {
+  min-height: 100%;
+  background: #eef7f5;
   scroll-behavior: smooth;
 }
 
 body {
+  min-height: 100%;
   margin: 0;
-  background: #f3f7fb;
+  background: #eef7f5;
   color: #102033;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+#root {
+  min-height: 100vh;
+  background: #eef7f5;
+}
+
+.dark,
 .dark body {
   background: #020617;
   color: #e2e8f0;
+}
+
+.dark #root {
+  background: #020617;
 }
 
 .leaflet-container {
@@ -122,6 +135,7 @@ body {
 }
 
 .tf-mesh-page {
+  background-color: #eef7f5;
   background:
     url("../assets/taskflow-transparent-bg.svg") center top / min(1500px, 120vw) auto no-repeat,
     radial-gradient(circle at 10% 10%, rgba(20, 184, 166, 0.22), transparent 30%),
@@ -131,6 +145,7 @@ body {
 }
 
 .tf-public-page {
+  background-color: #eef7f5;
   background:
     url("../assets/taskflow-transparent-bg.svg") center top / min(1500px, 120vw) auto no-repeat,
     radial-gradient(circle at 12% 8%, rgba(20, 184, 166, 0.18), transparent 28%),

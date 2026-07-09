@@ -30,7 +30,7 @@ export function PublicHero({ eyebrow, title, text, stats, primaryTo = '/company-
   ];
 
   return (
-    <section className="border-b border-teal-100/70 bg-[linear-gradient(135deg,rgba(255,255,255,0.9),rgba(236,253,245,0.78),rgba(255,247,237,0.72))] px-4 py-16 backdrop-blur dark:border-white/10 dark:bg-[linear-gradient(135deg,rgba(15,23,42,0.82),rgba(13,42,53,0.72),rgba(54,28,63,0.66))] sm:px-6 lg:px-8">
+    <section className="border-b border-teal-100/70 bg-[linear-gradient(135deg,rgba(240,253,250,0.9),rgba(236,253,245,0.8),rgba(255,247,237,0.72))] px-4 py-16 backdrop-blur dark:border-white/10 dark:bg-[linear-gradient(135deg,rgba(15,23,42,0.82),rgba(13,42,53,0.72),rgba(54,28,63,0.66))] sm:px-6 lg:px-8">
       <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.95fr_1.05fr]">
         <div className="flex flex-col justify-center">
           <p className="text-sm font-black uppercase tracking-wider text-cyan-700 dark:text-cyan-300">{eyebrow}</p>
@@ -78,7 +78,7 @@ export function ModuleGrid({ title = 'Core product modules', text = 'Every modul
 
 export function WorkflowBand() {
   return (
-    <section className="border-y border-teal-100 bg-[linear-gradient(135deg,#ffffff_0%,#ecfeff_52%,#fff7ed_100%)] px-4 py-16 text-slate-950 dark:border-teal-300/20 dark:bg-[linear-gradient(135deg,#072326_0%,#123f52_48%,#4a244c_100%)] dark:text-white sm:px-6 lg:px-8">
+    <section className="border-y border-teal-100 bg-[linear-gradient(135deg,#f0fdfa_0%,#ecfeff_52%,#fff7ed_100%)] px-4 py-16 text-slate-950 dark:border-teal-300/20 dark:bg-[linear-gradient(135deg,#072326_0%,#123f52_48%,#4a244c_100%)] dark:text-white sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="max-w-4xl">
           <p className="text-sm font-black uppercase tracking-wider text-cyan-700 dark:text-cyan-300">Workflow</p>
@@ -142,7 +142,7 @@ export function CompanyShowcase({ companies = [] }) {
 
 export function TrustBand() {
   return (
-    <section className="border-y border-teal-100 bg-[linear-gradient(135deg,#ffffff_0%,#ecfeff_50%,#fff7ed_100%)] px-4 py-14 dark:border-white/10 dark:bg-[linear-gradient(135deg,#07111f_0%,#111827_60%,#2b1938_100%)] sm:px-6 lg:px-8">
+    <section className="border-y border-teal-100 bg-[linear-gradient(135deg,#f0fdfa_0%,#ecfeff_50%,#fff7ed_100%)] px-4 py-14 dark:border-white/10 dark:bg-[linear-gradient(135deg,#07111f_0%,#111827_60%,#2b1938_100%)] sm:px-6 lg:px-8">
       <div className="mx-auto grid max-w-7xl gap-6 md:grid-cols-[0.7fr_1.3fr] md:items-center">
         <div>
           <p className="text-sm font-black uppercase tracking-wider text-cyan-700 dark:text-cyan-300">Production posture</p>
